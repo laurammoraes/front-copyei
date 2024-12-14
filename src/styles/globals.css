@@ -1,0 +1,42 @@
+@import url('https://fonts.cdnfonts.com/css/lexend');
+@import url('https://fonts.cdnfonts.com/css/hahmlet');
+@import url('https://fonts.cdnfonts.com/css/star-killers');
+
+:root{
+    --font-lexend: 'Lexend', sans-serif;
+    --font-hahmlet: 'Hahmlet', sans-serif;
+    --font-star-killer: 'Star Killers', sans-serif;
+    --color-white: #f8f4f4;
+    --color-red: #ff002b; 
+    --color-orange: #ffa500;
+    --color-purple: #501ddb;
+    --color-purple-dark: #2a009c;
+    --color-blue: #00a2ff;
+    --color-black: #050505;
+    --color-grey: #747474;
+    --color-transparent: #00000010;    
+    --color-green: #4fca5a;
+    --color-border-green: #00980d; 
+    --color-green-dark: #4fbe59;
+    --color-grey-sideBar: #7474743a;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+  
+html,
+body {
+    height: 100vh;
+    max-width: 100vw;
+    overflow: hidden;
+}
+body{
+    display: flex;
+    flex-direction: column;
+    background-image: linear-gradient(to bottom right,#00a2ff, #2a009c, #050505);
+    font-family: var(--font-lexend);
+}
+
