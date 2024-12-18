@@ -131,7 +131,12 @@ export default function AdminView() {
       /* Fazer requisição ao backend */
       const siteUrl = process.env.NEXT_PUBLIC_NODE_ENV === 'development' ? title : domain
       const editSiteUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/editor/${siteUrl}`
-      const response = await fetch(editSiteUrl, { method: 'GET' })
+      const response = await fetch(editSiteUrl, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${cookies.copyei_user}`,
+        },
+      })
 
       if (!response.ok) throw new Error('Ocorreu um erro ao abrir o editor. Tente novamente mais tarde...')
 
