@@ -4,8 +4,8 @@ import { redirect } from 'next/navigation'
 import CreateUserView from '@/layouts/CreateUserView'
 
 export default function CreateUserPage() {
-    // const token = cookies().get('copyei_user')?.value
-    // if (!token) redirect('/login')
+    const token = cookies().get('copyei_user')?.value
+    if (!token) redirect('/login')
 
     return <CreateUserView />
 }
