@@ -5,8 +5,8 @@ import { redirect } from 'next/navigation'
 import DashView from '@/layouts/DashView'
 
 export default function DashboardPage() {
-    // const token = cookies().get('copyei_user')?.value
-    // if (!token) redirect('/login')
+  // const token = cookies().get('copyei_user')?.value
+  // if (!token) redirect('/login')
 
-    return <DashView />
+  return <DashView />
 }
