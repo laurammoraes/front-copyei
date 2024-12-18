@@ -50,20 +50,19 @@ export default function ClonedView() {
       return
     }
 
-    /* Verifica se o título do site foi fornecido */
-    if (!titleSite || !/^[a-zA-Z0-9]+$/.test(titleSite)) {
-      toast.info('Título do site deve conter apenas letras e numeros!')
+    /* Validar título fornecido */
+    const titleRegex = /^[a-zA-Z0-9]+$/
+    if (!titleSite || !titleRegex.test(titleSite)) {
+      toast.info('O título do site deve conter apenas letras e números!')
       return
     }
 
-    /* Verifica se a URL do site para clonar foi fornecida */
-    if (!urlSiteToClone) {
-      toast.info('Url do site não informado!')
-      return
-    }
-
-    if (!validateUrl(urlSiteToClone)) {
-      toast.error('A URL do site para clonar é inválida! Use uma URL completa, como https://www.site.com')
+    /* Validar URL fornecida  */
+    const urlRegex =
+      // eslint-disable-next-line prettier/prettier
+      /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/
+    if (!urlSiteToClone || !urlRegex.test(urlSiteToClone) || !validateUrl(urlSiteToClone)) {
+      toast.info('A URL do site para clonar é inválida! Use uma URL completa, como https://www.site.com')
       return
     }
 
