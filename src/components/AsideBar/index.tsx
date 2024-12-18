@@ -2,6 +2,7 @@
 
 import React, { useContext } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 import { UserContext } from '@/contexts/UserContext'
 import style from './styles.module.css'
@@ -37,6 +38,24 @@ export function AsideBar() {
               <a href="/admin/dominios" className={style.Link}>
                 <Image src={'/icons/domains.gif'} width={30} height={30} alt="items"></Image>Meus Domínios
               </a>
+            </div>
+          )}
+
+          {user && user.role === 'ADMIN' && (
+            <div className={style.divMyPagesSideBar}>
+              <span className={style.titleLinks}>DASHBOARD</span>
+              <Link href={'/dashboard'} className={style.Link}>
+                <Image src={'/icons/items.gif'} width={30} height={30} alt="dash"></Image>Dashboard de usuários
+              </Link>
+            </div>
+          )}
+
+          {user && user.role === 'ADMIN' && (
+            <div className={style.divMyPagesSideBar}>
+              <span className={style.titleLinks}>ADICIONAR USUÁRIOS</span>
+              <Link href={'/dashboard'} className={style.Link}>
+                <Image src={'/icons/person.gif'} width={30} height={30} alt="dash"></Image>Adicionar usuários
+              </Link>
             </div>
           )}
         </div>
