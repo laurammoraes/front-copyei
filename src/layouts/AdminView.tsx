@@ -64,7 +64,12 @@ export default function AdminView() {
       /* Fazer requisição ao backend */
       const siteUrl = process.env.NEXT_PUBLIC_NODE_ENV === 'development' ? title : domain
       const viewSiteUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/site/${siteUrl}`
-      const response = await fetch(viewSiteUrl, { method: 'GET' })
+      const response = await fetch(viewSiteUrl, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${cookies.copyei_user}`,
+        },
+      })
 
       /* Captar exceções */
       if (!response.ok) {
