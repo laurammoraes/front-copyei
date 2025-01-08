@@ -53,7 +53,7 @@ export function AsideBar() {
           {user && user.role === 'ADMIN' && (
             <div className={style.divMyPagesSideBar}>
               <span className={style.titleLinks}>ADICIONAR USUÁRIOS</span>
-              <Link href={'/dashboard'} className={style.Link}>
+              <Link href={'/users/create'} className={style.Link}>
                 <Image src={'/icons/person.gif'} width={30} height={30} alt="dash"></Image>Adicionar usuários
               </Link>
             </div>

@@ -44,7 +44,7 @@ export function LoginView() {
       setIsLoading(true)
 
       /* Fazer requisição para backend */
-      const loginResponse = await fetchAPI<{ message?: string }>('/login', {
+      const loginResponse = await fetchAPI<{ message?: string }>('/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
