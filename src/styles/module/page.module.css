@@ -210,6 +210,16 @@
   padding: 0.1rem 0.3rem;
 }
 
+.btnDrive {
+  background-color: var(--color-white);
+  color: var(--color-white);
+  font-family: var(--font-lexend);
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  padding: 0.1rem 0.3rem;
+}
+
 .urlDiv {
   display: flex;
   gap: 2rem;
@@ -383,5 +393,4 @@
   flex: 1;
   border-bottom: 1px solid #000;
   margin: 0 0.5rem;
-
 }

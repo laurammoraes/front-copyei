@@ -15,6 +15,7 @@ interface Site {
   id: number
   clone_url: string
   title: string
+  type: 'LOCAL' | 'DRIVE'
   Domain: {
     id: number
     domain: string
@@ -88,7 +89,12 @@ export default function AdminView() {
     }
   }
 
-  const handleButtonDownloadSite = async (domain: string, title: string) => {
+  const handleButtonDownloadSite = async (domain: string, title: string, type: 'LOCAL' | 'DRIVE') => {
+    if (type === 'DRIVE') {
+      toast.info('Você não pode editar um site que está armazenado no Google Drive')
+      return
+    }
+
     try {
       /* Inicia estado de carregamento */
       setIsLoading(true)
@@ -128,7 +134,12 @@ export default function AdminView() {
   }
 
   /* Função para lidar com o clique no botão de edição do site */
-  const handleButtonClickEdit = async (domain: string, siteId: number, title: string) => {
+  const handleButtonClickEdit = async (domain: string, siteId: number, title: string, type: 'LOCAL' | 'DRIVE') => {
+    if (type === 'DRIVE') {
+      toast.info('Você não pode editar um site que está armazenado no Google Drive')
+      return
+    }
+
     try {
       /* Inicia estado de carregamento */
       setIsLoading(true)
@@ -156,7 +167,12 @@ export default function AdminView() {
     }
   }
 
-  const handleButtonDownloadHtml = async (domain: string, title: string) => {
+  const handleButtonDownloadHtml = async (domain: string, title: string, type: 'LOCAL' | 'DRIVE') => {
+    if (type === 'DRIVE') {
+      toast.info('Você não pode editar um site que está armazenado no Google Drive')
+      return
+    }
+
     try {
       /* Inicia estado de carregamento */
       setIsLoading(true)
@@ -189,6 +205,42 @@ export default function AdminView() {
     } catch (error) {
       console.error(error)
       toast.error('Ocorreu um erro ao baixar HTML. Tente novamente mais tarde...')
+    } finally {
+      /* Finaliza estado de carregamento */
+      setIsLoading(false)
+    }
+  }
+
+  const handleUploadToDrive = async (domain: string) => {
+    try {
+      /* Inicia estado de carregamento */
+      setIsLoading(true)
+
+      /* Fazer requisição ao backend */
+      const response = await fetchAPI<any>(`/websites/${domain}/upload-to-drive`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${cookies.copyei_user}`,
+        },
+        credentials: 'include',
+      })
+
+      /* Redirecionar usuário a tela de login social com o Google, caso o usuário não esteja com o token do Google */
+      if (response.data?.message && response.data?.message === 'O usuário precisa logar com o Google') {
+        const googleAuthEndpoint = `${process.env.NEXT_PUBLIC_API_BASE_URL}/google/auth`
+        window.open(googleAuthEndpoint, '_blank')
+        return
+      }
+
+      /* Captar exceções */
+      if (!response.ok) throw new Error('Erro ao deletar URL')
+
+      toast.success('Site transferido para o Google Drive com sucesso!')
+      location.reload()
+    } catch (error) {
+      console.error(error)
+      toast.error('Ocorreu um erro ao transferir o site para o Google Drive. Tente novamente mais tarde...')
     } finally {
       /* Finaliza estado de carregamento */
       setIsLoading(false)
@@ -252,7 +304,7 @@ export default function AdminView() {
                             <button
                               className={style.btnRouteEdit}
                               type="button"
-                              onClick={() => handleButtonClickEdit(site.Domain.domain, site.id, site.title)}
+                              onClick={() => handleButtonClickEdit(site.Domain.domain, site.id, site.title, site.type)}
                               disabled={isLoading}
                             >
                               {isLoading ? (
@@ -285,14 +337,14 @@ export default function AdminView() {
                               </button>
                               <div className={style.downloadOptions}>
                                 <button
-                                  onClick={() => handleButtonDownloadSite(site.Domain.domain, site.title)}
+                                  onClick={() => handleButtonDownloadSite(site.Domain.domain, site.title, site.type)}
                                   type="button"
                                   disabled={isLoading}
                                 >
                                   ZIP
                                 </button>
                                 <button
-                                  onClick={() => handleButtonDownloadHtml(site.Domain.domain, site.title)}
+                                  onClick={() => handleButtonDownloadHtml(site.Domain.domain, site.title, site.type)}
                                   type="button"
                                   disabled={isLoading}
                                 >
@@ -313,6 +365,35 @@ export default function AdminView() {
                                 <Image src={'/icons/bin.gif'} width={30} height={30} alt="edit" />
                               )}
                             </button>
+
+                            {site.type === 'LOCAL' && (
+                              <button
+                                className={style.btnDrive}
+                                type="button"
+                                onClick={() => handleUploadToDrive(site.title)}
+                                disabled={isLoading}
+                              >
+                                {isLoading ? (
+                                  <div className={style.loader}></div>
+                                ) : (
+                                  <div className="size-[30px]">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      width="30"
+                                      height="30"
+                                      viewBox="0 0 1443.061 1249.993"
+                                    >
+                                      <path
+                                        fill="#3777e3"
+                                        d="M240.525 1249.993l240.492-416.664h962.044l-240.514 416.664z"
+                                      />
+                                      <path fill="#ffcf63" d="M962.055 833.329h481.006L962.055 0H481.017z" />
+                                      <path fill="#11a861" d="M0 833.329l240.525 416.664 481.006-833.328L481.017 0z" />
+                                    </svg>
+                                  </div>
+                                )}
+                              </button>
+                            )}
                           </td>
                         </tr>
                       ))}
