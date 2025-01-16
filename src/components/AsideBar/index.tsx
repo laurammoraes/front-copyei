@@ -19,9 +19,16 @@ export function AsideBar() {
           </a>
 
           <div className={style.divMyPagesSideBar}>
-            <span className={style.titleLinks}>PÁGINAS CLONADAS</span>
+            <span className={style.titleLinks}>PÁGINAS NA COPYEI</span>
             <a href="/admin" className={style.Link}>
               <Image src={'/icons/items.gif'} width={30} height={30} alt="items"></Image>Minhas páginas
+            </a>
+          </div>
+
+          <div className={style.divMyPagesSideBar}>
+            <span className={style.titleLinks}>PÁGINAS NO GOOGLE DRIVE</span>
+            <a href="/admin/drive-websites" className={style.Link}>
+              <Image src={'/icons/items.gif'} width={30} height={30} alt="items"></Image>Meu Drive
             </a>
           </div>
 

@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { toast } from 'react-toastify'
 import { parseCookies } from 'nookies'
@@ -27,6 +28,7 @@ export default function AdminView() {
   const [sites, setSites] = useState<Site[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const cookies = parseCookies()
+  const router = useRouter()
 
   const handleButtonClickDelete = async (siteId: number) => {
     try {
@@ -229,7 +231,7 @@ export default function AdminView() {
       /* Redirecionar usuário a tela de login social com o Google, caso o usuário não esteja com o token do Google */
       if (response.data?.message && response.data?.message === 'O usuário precisa logar com o Google') {
         const googleAuthEndpoint = `${process.env.NEXT_PUBLIC_API_BASE_URL}/google/auth`
-        window.open(googleAuthEndpoint, '_blank')
+        router.push(googleAuthEndpoint)
         return
       }
 
@@ -237,7 +239,7 @@ export default function AdminView() {
       if (!response.ok) throw new Error('Erro ao deletar URL')
 
       toast.success('Site transferido para o Google Drive com sucesso!')
-      location.reload()
+      router.push('/admin/drive-websites')
     } catch (error) {
       console.error(error)
       toast.error('Ocorreu um erro ao transferir o site para o Google Drive. Tente novamente mais tarde...')
@@ -251,7 +253,7 @@ export default function AdminView() {
     const searchSites = async () => {
       try {
         /* Fazer requisição para backend */
-        const sitesResponse = await fetchAPI<{ sites?: Site[] }>('/searchSites', {
+        const sitesResponse = await fetchAPI<{ sites?: Site[] }>('/searchSites?type=LOCAL', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -283,7 +285,7 @@ export default function AdminView() {
           <div className={style.content}>
             <div className={style.containerSitesCloned}>
               <div className={style.contentSitesCloned}>
-                <h1 className={style.title}>SITES CLONADOS</h1>
+                <h1 className={style.title}>Páginas hospedadas na Copyei</h1>
                 {sites.length > 0 ? (
                   <table className={style.sitesTable}>
                     <thead className={style.containerTitleTable}>
