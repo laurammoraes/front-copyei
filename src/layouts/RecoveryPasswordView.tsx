@@ -37,8 +37,8 @@ export default function RecoveryPasswordView() {
 
             setIsLoading(true)
 
-            /* Fazer requisição para backend */
-            const registerResponse = await fetchAPI<{ message?: string }>('/register', {
+
+            const registerResponse = await fetchAPI<{ message?: string }>('/api/request-recover-password', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

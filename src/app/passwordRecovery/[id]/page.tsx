@@ -1,4 +1,5 @@
 
+import { UpdatePasswordView } from '@/layouts/UpdatePasswordView'
 import React from 'react'
 
 
