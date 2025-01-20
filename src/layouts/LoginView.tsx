@@ -44,7 +44,7 @@ export function LoginView() {
       setIsLoading(true)
 
       /* Fazer requisição para backend */
-      const loginResponse = await fetchAPI<{ message?: string }>('/login', {
+      const loginResponse = await fetchAPI<{ message?: string }>('/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -105,6 +105,10 @@ export function LoginView() {
 
           <a className={style.link} href="/register">
             Ainda não possui uma conta ?
+          </a>
+
+          <a className={style.link} href="/passwordRecovery">
+            Esqueceu sua senha?
           </a>
         </form>
       </FormProvider>

@@ -28,7 +28,7 @@ export default function CreateUserView() {
       return
     }
 
-    const urlCreateUser = `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/create`
+    const urlCreateUser = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/create`
 
     try {
       setLoading(true)
@@ -70,7 +70,7 @@ export default function CreateUserView() {
 
     try {
       setUploadLoading(true)
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/upload-sheet/create-many-users`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/upload-sheet/create-many-users`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${cookies.copyei_user}`,
