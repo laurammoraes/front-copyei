@@ -152,14 +152,14 @@ export function UserView() {
     try {
       setLoading(true)
       const [userResponse, logsResponse] = await Promise.all([
-        fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/user/list/${params.id}`, {
+        fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/user/list/${params.id}`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${cookies.copyei_user}`,
           },
           cache: 'no-cache',
         }),
-        fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/logs/${params.id}`, {
+        fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/logs/${params.id}`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${cookies.copyei_user}`,
@@ -214,8 +214,8 @@ export function UserView() {
     try {
       setLoading(true)
       const endpoint = user?.usageDuration.isPaused
-        ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/user/active/${params.id}`
-        : `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/user/pause/${params.id}`
+        ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/user/active/${params.id}`
+        : `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/user/pause/${params.id}`
 
       const response = await fetch(endpoint, {
         method: 'PATCH',
@@ -250,7 +250,7 @@ export function UserView() {
 
     try {
       setLoading(true)
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/user/delete/${params.id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/user/delete/${params.id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

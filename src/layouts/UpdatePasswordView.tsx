@@ -51,7 +51,7 @@ export function UpdatePasswordView() {
       /* Iniciar estado de carregamento */
       setIsLoading(true)
 
-      const registerResponse = await fetchAPI<{ message?: string }>(`/api/recover-password/${id}`, {
+      const registerResponse = await fetchAPI<{ message?: string }>(`/recover-password/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
