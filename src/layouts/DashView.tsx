@@ -51,7 +51,7 @@ export default function DashView() {
 
   const searchUsers = async (page: number) => {
     try {
-      const searchUsers = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/list?page=${page}&per_page=${itemsPerPage}`
+      const searchUsers = `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/list?page=${page}&per_page=${itemsPerPage}`
       const response = await fetch(searchUsers, {
         method: 'GET',
         headers: {
@@ -86,7 +86,7 @@ export default function DashView() {
 
   const handleDownloadSheet = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/download-sheet/all`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/download-sheet/all`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${cookies.copyei_user}`,
