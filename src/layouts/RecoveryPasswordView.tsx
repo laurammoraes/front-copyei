@@ -33,7 +33,7 @@ export default function RecoveryPasswordView() {
     try {
       setIsLoading(true)
 
-      const registerResponse = await fetchAPI<{ message?: string }>('/api/request-recover-password', {
+      const registerResponse = await fetchAPI<{ message?: string }>('/request/recover-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
