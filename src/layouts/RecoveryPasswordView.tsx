@@ -43,10 +43,12 @@ export default function RecoveryPasswordView() {
         }),
       })
 
+      console.log(registerResponse)
       if (!registerResponse.ok) throw new Error('Ocorreu um erro. Tente novamente mais tarde...')
 
       toast.info('E-mail enviado com sucesso!')
     } catch (error) {
+      console.log(error)
       toast.error('Ocorreu um erro. Tente novamente mais tarde...')
     } finally {
       setIsLoading(false)
