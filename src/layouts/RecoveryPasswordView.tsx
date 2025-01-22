@@ -33,7 +33,7 @@ export default function RecoveryPasswordView() {
     try {
       setIsLoading(true)
 
-      const registerResponse = await fetchAPI<{ message?: string }>('/request/recover', {
+      const registerResponse = await fetchAPI<{ message?: string }>('/recover/request', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export default function RecoveryPasswordView() {
         }),
       })
 
- 
+
       if (!registerResponse.ok) throw new Error('Ocorreu um erro. Tente novamente mais tarde...')
 
       toast.info('E-mail enviado com sucesso!')
