@@ -30,6 +30,8 @@ interface User {
   id: string
   name: string
   email: string
+  description_plan: string
+  due_date: string
   Domains: Domain[]
   Websites: Website[]
   created_at: string
@@ -72,6 +74,12 @@ export function UserStatus({ user, onUpdate, loading }: UserStatusProps) {
     email: user.email,
   })
 
+  const formattedDate = new Intl.DateTimeFormat("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(new Date(user.due_date));
+
   return (
     <div className="mx-auto max-w-2xl rounded-lg bg-white p-6 shadow">
       <h3 className="mb-4 text-center text-xl font-semibold">Informações do Usuário</h3>
@@ -82,6 +90,12 @@ export function UserStatus({ user, onUpdate, loading }: UserStatusProps) {
         </div>
         <div>
           <p className="text-gray-600">E-mail: {user.email}</p>
+        </div>
+        <div>
+          <p className="text-gray-600">Descrição do plano: {user.description_plan}</p>
+        </div>
+        <div>
+          <p className="text-gray-600">Data de expiração: {formattedDate}</p>
         </div>
       </div>
 
