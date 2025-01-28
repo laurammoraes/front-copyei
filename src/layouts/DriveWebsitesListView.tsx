@@ -132,7 +132,6 @@ export default function DriveWebsitesListView() {
                     <thead className={style.containerTitleTable}>
                       <tr className={style.titleTable}>
                         <th>Site</th>
-                        <th>Domínio</th>
                         <th>Site Clonado</th>
                         <th>Link de acesso</th>
                         <th>Ação</th>
@@ -142,7 +141,6 @@ export default function DriveWebsitesListView() {
                       {sites.map((site) => (
                         <tr key={site.id} className={style.dataTable}>
                           <td>{site.title}</td>
-                          <td>{site.Domain.domain.replace('https://', '')}</td>
                           <td className={style.textSiteCloned}>{site.clone_url.replace('https://', '')}</td>
                           <td>
                             <div className="flex gap-2">
@@ -150,18 +148,14 @@ export default function DriveWebsitesListView() {
                                 className={style.buttonCopyToClipboard}
                                 type="button"
                                 onClick={() => {
-                                  navigator.clipboard.writeText(
-                                    `${process.env.NEXT_PUBLIC_API_BASE_URL}/site/${site.title}`,
-                                  )
+                                  navigator.clipboard.writeText(`https://${site.title}.zr0.online`)
                                   toast.success('Link copiado!')
                                 }}
                                 title="Copiar para a área de transferência"
                               >
                                 <CopySimple size={24} />
                               </button>
-                              <span className="text-sm">
-                                {process.env.NEXT_PUBLIC_API_BASE_URL}/site/{site.title}
-                              </span>
+                              <span className="text-sm">https://{site.title}.zr0.online</span>
                             </div>
                           </td>
                           <td>

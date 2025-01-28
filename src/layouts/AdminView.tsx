@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { toast } from 'react-toastify'
@@ -10,6 +10,7 @@ import { fetchAPI } from '@/utils/fetchAPI'
 import { AsideBar } from '@/components/AsideBar'
 import { NavBar } from '@/components/NavBar'
 import style from '../styles/module/page.module.css'
+import { UserContext } from '@/contexts/UserContext'
 
 /* Define o tipo de dados para os sites */
 interface Site {
@@ -29,6 +30,7 @@ export default function AdminView() {
   const [isLoading, setIsLoading] = useState(false)
   const cookies = parseCookies()
   const router = useRouter()
+  const { user } = useContext(UserContext)
 
   const handleButtonClickDelete = async (siteId: number) => {
     try {
@@ -368,7 +370,7 @@ export default function AdminView() {
                               )}
                             </button>
 
-                            {site.type === 'LOCAL' && (
+                            {user?.role === 'ADMIN' && site.type === 'LOCAL' && (
                               <button
                                 className={style.btnDrive}
                                 type="button"
