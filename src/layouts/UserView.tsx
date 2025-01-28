@@ -74,11 +74,15 @@ export function UserStatus({ user, onUpdate, loading }: UserStatusProps) {
     email: user.email,
   })
 
-  const formattedDate = new Intl.DateTimeFormat("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).format(new Date(user.due_date));
+  let formattedDate = "00/00/0000"
+  if(user.due_date){
+   formattedDate = new Intl.DateTimeFormat("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    }).format(new Date(user.due_date));
+  }
+  
 
   return (
     <div className="mx-auto max-w-2xl rounded-lg bg-white p-6 shadow">
