@@ -148,14 +148,14 @@ export default function DriveWebsitesListView() {
                                 className={style.buttonCopyToClipboard}
                                 type="button"
                                 onClick={() => {
-                                  navigator.clipboard.writeText(`https://${site.title}.zr0.online`)
+                                  navigator.clipboard.writeText(`${site.title}.zr0.online`)
                                   toast.success('Link copiado!')
                                 }}
                                 title="Copiar para a área de transferência"
                               >
                                 <CopySimple size={24} />
                               </button>
-                              <span className="text-sm">https://{site.title}.zr0.online</span>
+                              <span className="text-sm">{site.title}.zr0.online</span>
                             </div>
                           </td>
                           <td>
