@@ -1,6 +1,7 @@
 'use client'
 
 import React, { FormEvent, useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { toast } from 'react-toastify'
 import { parseCookies } from 'nookies'
@@ -39,6 +40,7 @@ export default function ClonedView() {
   const [domains, setDomains] = useState<FilteredDomains[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const cookies = parseCookies()
+  const router = useRouter()
 
   /* Função para lidar com o envio do formulário de clonagem de site */
   const handleSubmit = async (event: FormEvent) => {
@@ -114,6 +116,7 @@ export default function ClonedView() {
       setUrlSiteToClone('')
       setDomainSelect(null)
       setTitleSite('')
+      router.push('/admin')
     } catch (error) {
       console.error(error)
       toast.error('Ocorreu um erro ao clonar o site. Tente novamente mais tarde...')
