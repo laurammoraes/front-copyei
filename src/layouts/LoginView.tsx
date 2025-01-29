@@ -103,9 +103,9 @@ export function LoginView() {
             {isLoading ? <div className={style.loader}></div> : 'Entrar'}
           </Button>
 
-          {/* <a className={style.link} href="/register">
+          <a className={style.link} href="http://v1.copyei.com/copyei">
             Ainda não possui uma conta ?
-          </a> */}
+          </a>
 
           <a className={style.link} href="/passwordRecovery">
             Esqueceu sua senha?
