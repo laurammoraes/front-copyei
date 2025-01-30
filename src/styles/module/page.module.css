@@ -69,6 +69,25 @@
   transition: 300ms ease-in-out;
 }
 
+.btnFilter {
+  background-color: var(--color-orange);
+  color: var(--color-white);
+  font-family: var(--font-lexend);
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  width: auto;
+  height: 45px;
+  padding-left: 3%;
+  margin-left: 2%;
+  padding-right: 3%;
+  transition: 300ms ease-in-out;
+}
+
+.filtersContainer{
+  width: 100%;
+}
+
 .btnSend:hover {
   background-color: var(--color-green-dark);
 }
@@ -179,6 +198,8 @@
   cursor: pointer;
   padding: 0.1rem 0.3rem;
 }
+
+
 
 .btnRouteView {
   background-color: var(--color-orange);
