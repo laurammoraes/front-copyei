@@ -176,14 +176,17 @@ const searchUsers = async (page: number) => {
                     placeholder="Filtrar por e-mail"
                     className={style.input}
                   />
-                  <input
-                    type="text"
+                  
+                  <select
                     name="role"
                     value={filters.role}
                     onChange={handleFilterChange}
-                    placeholder="Filtrar por função"
                     className={style.input}
-                  />
+                  >
+                    <option value="">Selecione a função</option>
+                    <option value="ADMIN">ADMIN</option>
+                    <option value="USER">USER</option>
+                  </select>
                   <select
                     name="status"
                     value={filters.status}
