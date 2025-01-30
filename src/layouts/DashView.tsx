@@ -33,10 +33,16 @@ export default function DashView() {
   const [loadingUserId, setLoadingUserId] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(0)
-  const [itemsPerPage] = useState(10) // Quantidade de itens por página
+  const [filters, setFilters] = useState({
+    name: '',
+    email: '',
+    role: '',
+    status: '',
+  })
 
   const cookies = parseCookies()
   const router = useRouter()
+
 
   const handleButtonClickView = async (id: string) => {
     try {
@@ -49,40 +55,53 @@ export default function DashView() {
     }
   }
 
-  const searchUsers = async (page: number) => {
-    try {
-      const searchUsers = `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/list?page=${page}&per_page=${itemsPerPage}`
-      const response = await fetch(searchUsers, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${cookies.copyei_user}`,
-        },
-        cache: 'no-cache',
-      })
+const searchUsers = async (page: number) => {
+  try {
+    const searchParams = new URLSearchParams({
+      page: page.toString(),
+      per_page: '10',  
+      name: filters.name,
+      email: filters.email,
+      role: filters.role,
+      status: filters.status,
+    }).toString()  
 
-      if (!response.ok) {
-        toast.error('Ocorreu um erro inesperado. Tente novamente mais tarde...')
-        return
-      }
+    const searchUsers = `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/list?${searchParams}`
 
-      const data: PaginatedUsers = await response.json()
+    const response = await fetch(searchUsers, {
+      method: 'GET',  
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${cookies.copyei_user}`,
+      },
+      cache: 'no-cache',  
+    })
 
-      setUsers(data.data)
-      setTotalPages(data.pagination.lastPage)
-    } catch (error) {
-      console.error('Erro ao buscar usuários', error)
-      toast.error('Ocorreu um erro inesperado. Tente novamente mais tarde...')
+    if (!response.ok) {
+      toast.error('Erro ao buscar usuários. Tente novamente mais tarde.')
+      return
     }
+
+    const data: PaginatedUsers = await response.json()
+
+    setUsers(data.data)
+    setTotalPages(data.pagination.lastPage)
+  } catch (error) {
+    console.error('Erro ao buscar usuários', error)
+    toast.error('Ocorreu um erro inesperado. Tente novamente mais tarde...')
   }
+}
+
 
   useEffect(() => {
     searchUsers(currentPage)
-  }, [currentPage, cookies.copyei_user])
+  }, [currentPage, filters, cookies.copyei_user])
+
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
   }
+
 
   const handleDownloadSheet = async () => {
     try {
@@ -113,6 +132,21 @@ export default function DashView() {
     }
   }
 
+
+  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = event.target
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value,
+    }))
+  }
+
+
+  const applyFilters = () => {
+    setCurrentPage(1)  
+    searchUsers(1)  
+  }
+
   return (
     <>
       <NavBar />
@@ -124,6 +158,43 @@ export default function DashView() {
               <div className={style.contentSitesCloned}>
                 <div className={style.headerContent}>
                   <h1 className={style.title}>CONTROLE DE USUÁRIOS</h1>
+                </div>
+                <div className={style.filtersContainer}>
+                  <input
+                    type="text"
+                    name="name"
+                    value={filters.name}
+                    onChange={handleFilterChange}
+                    placeholder="Filtrar por nome"
+                    className={style.input}
+                  />
+                  <input
+                    type="email"
+                    name="email"
+                    value={filters.email}
+                    onChange={handleFilterChange}
+                    placeholder="Filtrar por e-mail"
+                    className={style.input}
+                  />
+                  <input
+                    type="text"
+                    name="role"
+                    value={filters.role}
+                    onChange={handleFilterChange}
+                    placeholder="Filtrar por função"
+                    className={style.input}
+                  />
+                  <select
+                    name="status"
+                    value={filters.status}
+                    onChange={handleFilterChange}
+                    className={style.input}
+                  >
+                    <option value="">Selecione o status</option>
+                    <option value="Ativo">Ativo</option>
+                    <option value="Inativo">Inativo</option>
+                  </select>
+                  <button onClick={applyFilters} className={style.btnFilter}>Filtrar</button>
                 </div>
                 {users.length > 0 ? (
                   <div>
@@ -137,6 +208,7 @@ export default function DashView() {
                           <th>E-mail</th>
                           <th>Role</th>
                           <th>Status</th>
+                          <th>Ação</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -159,30 +231,28 @@ export default function DashView() {
                         ))}
                       </tbody>
                     </table>
-                    {users.length >= itemsPerPage && (
-                      <div className={style.pagination}>
-                        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-                          Anterior
-                        </button>
+                    <div className={style.pagination}>
+                      <button className={style.btnFilter} onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                        Anterior
+                      </button>
 
-                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                          <button
-                            key={page}
-                            onClick={() => handlePageChange(page)}
-                            className={currentPage === page ? style.activePage : ''}
-                          >
-                            {page}
-                          </button>
-                        ))}
-
-                        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-                          Próximo
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <button
+                          key={page}
+                          onClick={() => handlePageChange(page)}
+                          className={currentPage === page ? style.activePage : ''}
+                        >
+                          {page}
                         </button>
-                      </div>
-                    )}
+                      ))}
+
+                      <button className={style.btnFilter} onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+                        Próximo
+                      </button>
+                    </div>
                   </div>
                 ) : (
-                  <p>Nenhum usuário cadastrado no momento.</p>
+                  <p>Nenhum usuário encontrado com esses filtros.</p>
                 )}
               </div>
             </div>
