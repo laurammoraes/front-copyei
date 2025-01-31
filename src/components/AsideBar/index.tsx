@@ -25,14 +25,13 @@ export function AsideBar() {
             </a>
           </div>
 
-          {user && user.role === 'ADMIN' && (
-            <div className={style.divMyPagesSideBar}>
-              <span className={style.titleLinks}>PÁGINAS NO GOOGLE DRIVE</span>
-              <a href="/admin/drive-websites" className={style.Link}>
-                <Image src={'/icons/items.gif'} width={30} height={30} alt="items"></Image>Meu Drive
-              </a>
-            </div>
-          )}
+          {/* Optional: Add a contitional to only admins access /drive-websites */}
+          <div className={style.divMyPagesSideBar}>
+            <span className={style.titleLinks}>PÁGINAS NO GOOGLE DRIVE</span>
+            <a href="/admin/drive-websites" className={style.Link}>
+              <Image src={'/icons/items.gif'} width={30} height={30} alt="items"></Image>Meu Drive
+            </a>
+          </div>
 
           <div className={style.divMyPagesSideBar}>
             <span className={style.titleLinks}>CLONAR</span>
