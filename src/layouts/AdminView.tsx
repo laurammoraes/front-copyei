@@ -370,7 +370,8 @@ export default function AdminView() {
                               )}
                             </button>
 
-                            {user?.role === 'ADMIN' && site.type === 'LOCAL' && (
+                            {/* Optional: Block here for only admins send to Google Drive */}
+                            {site.type === 'LOCAL' && (
                               <button
                                 className={style.btnDrive}
                                 type="button"
