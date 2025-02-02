@@ -9,6 +9,7 @@ import style from '../styles/module/page.module.css'
 import { useRouter } from 'next/navigation'
 import { NavBar } from '@/components/NavBar'
 import { AsideBar } from '@/components/AsideBar'
+import * as XLSX from 'xlsx';
 
 interface User {
   id: string
@@ -55,42 +56,42 @@ export default function DashView() {
     }
   }
 
-const searchUsers = async (page: number) => {
-  try {
-    const searchParams = new URLSearchParams({
-      page: page.toString(),
-      per_page: '10',  
-      name: filters.name,
-      email: filters.email,
-      role: filters.role,
-      status: filters.status,
-    }).toString()  
+  const searchUsers = async (page: number) => {
+    try {
+      const searchParams = new URLSearchParams({
+        page: page.toString(),
+        per_page: '10',
+        name: filters.name,
+        email: filters.email,
+        role: filters.role,
+        status: filters.status,
+      }).toString()
 
-    const searchUsers = `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/list?${searchParams}`
+      const searchUsers = `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/list?${searchParams}`
 
-    const response = await fetch(searchUsers, {
-      method: 'GET',  
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${cookies.copyei_user}`,
-      },
-      cache: 'no-cache',  
-    })
+      const response = await fetch(searchUsers, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${cookies.copyei_user}`,
+        },
+        cache: 'no-cache',
+      })
 
-    if (!response.ok) {
-      toast.error('Erro ao buscar usuários. Tente novamente mais tarde.')
-      return
+      if (!response.ok) {
+        toast.error('Erro ao buscar usuários. Tente novamente mais tarde.')
+        return
+      }
+
+      const data: PaginatedUsers = await response.json()
+
+      setUsers(data.data)
+      setTotalPages(data.pagination.lastPage)
+    } catch (error) {
+      console.error('Erro ao buscar usuários', error)
+      toast.error('Ocorreu um erro inesperado. Tente novamente mais tarde...')
     }
-
-    const data: PaginatedUsers = await response.json()
-
-    setUsers(data.data)
-    setTotalPages(data.pagination.lastPage)
-  } catch (error) {
-    console.error('Erro ao buscar usuários', error)
-    toast.error('Ocorreu um erro inesperado. Tente novamente mais tarde...')
   }
-}
 
 
   useEffect(() => {
@@ -105,33 +106,66 @@ const searchUsers = async (page: number) => {
 
   const handleDownloadSheet = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/download-sheet/all`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${cookies.copyei_user}`,
-        },
-      })
+      const allUsers = [];
+      const perPage = 500; // Define um número seguro de usuários por requisição
+      let currentPage = 1;
+      let totalPages = 1;
 
-      if (!response.ok) {
-        throw new Error('Erro ao baixar planilha')
+      const fetchPage = async (page: number) => {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/list?page=${page}&per_page=${perPage}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${cookies.copyei_user}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`Erro ao buscar usuários na página ${page}`);
+        }
+
+        const data = await response.json();
+        return data;
+      };
+
+      // Função para buscar usuários em lotes com intervalos para evitar timeout
+      while (currentPage <= totalPages) {
+        const data = await fetchPage(currentPage);
+
+        allUsers.push(...data.data); // Adiciona os usuários ao array
+        totalPages = data.pagination.lastPage; // Atualiza o número total de páginas
+
+        currentPage++;
+
+        // Aguarda 500ms antes de continuar para evitar sobrecarregar o servidor
+        await new Promise((resolve) => setTimeout(resolve, 500));
       }
 
-      const blob = await response.blob()
-      const url = window.URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = 'usuarios.xlsx'
-      document.body.appendChild(a)
-      a.click()
-      window.URL.revokeObjectURL(url)
-      document.body.removeChild(a)
+      // Gera o arquivo Excel com os dados consolidados
+      const worksheet = XLSX.utils.json_to_sheet(allUsers);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Usuários');
+      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
 
-      toast.success('Download iniciado com sucesso!')
+      // Faz o download do arquivo
+      const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'usuarios.xlsx';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      toast.success('Download concluído com sucesso!');
     } catch (error) {
-      toast.error('Erro ao baixar planilha de usuários')
+      console.error('Erro ao realizar o download da planilha:', error);
+      toast.error('Erro ao baixar planilha de usuários');
     }
-  }
-
+  };
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target
@@ -143,8 +177,8 @@ const searchUsers = async (page: number) => {
 
 
   const applyFilters = () => {
-    setCurrentPage(1)  
-    searchUsers(1)  
+    setCurrentPage(1)
+    searchUsers(1)
   }
 
   return (
@@ -176,7 +210,7 @@ const searchUsers = async (page: number) => {
                     placeholder="Filtrar por e-mail"
                     className={style.input}
                   />
-                  
+
                   <select
                     name="role"
                     value={filters.role}
