@@ -58,6 +58,15 @@ export function AsideBar() {
               </Link>
             </div>
           )}
+
+          {user && user.role === 'ADMIN' && (
+            <div className={style.divMyPagesSideBar}>
+              <span className={style.titleLinks}>GERADOR DE WEBHOOK</span>
+              <Link href={'/webhook'} className={style.Link}>
+                <Image src="/icons/fork.gif" width={30} height={30} alt="dash"></Image>Gerar Webhook
+              </Link>
+            </div>
+          )}
         </div>
       </section>
     </>
