@@ -231,6 +231,16 @@
   padding: 0.1rem 0.3rem;
 }
 
+.btnDrive {
+  background-color: var(--color-white);
+  color: var(--color-white);
+  font-family: var(--font-lexend);
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  padding: 0.1rem 0.3rem;
+}
+
 .urlDiv {
   display: flex;
   gap: 2rem;
@@ -404,5 +414,17 @@
   flex: 1;
   border-bottom: 1px solid #000;
   margin: 0 0.5rem;
+}
 
+.buttonCopyToClipboard {
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  border: 1px solid #d4d4d4;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.buttonCopyToClipboard:hover {
+  transition: all;
+  border: 1px solid #a3a3a3;
 }
