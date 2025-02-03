@@ -11,6 +11,7 @@ import { AsideBar } from '@/components/AsideBar'
 import { NavBar } from '@/components/NavBar'
 import style from '../styles/module/page.module.css'
 import { UserContext } from '@/contexts/UserContext'
+import { BlockingModal } from '@/components/BlockingModal'
 
 /* Define o tipo de dados para os sites */
 interface Site {
@@ -28,6 +29,7 @@ interface Site {
 export default function AdminView() {
   const [sites, setSites] = useState<Site[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [blockingModalId, setBlockingModalId] = useState<string | null>(null)
   const cookies = parseCookies()
   const router = useRouter()
   const { user } = useContext(UserContext)
@@ -241,7 +243,7 @@ export default function AdminView() {
       if (!response.ok) throw new Error('Erro ao deletar URL')
 
       toast.success('Site transferido para o Google Drive com sucesso!')
-      router.push('/admin/drive-websites')
+      setBlockingModalId(domain)
     } catch (error) {
       console.error(error)
       toast.error('Ocorreu um erro ao transferir o site para o Google Drive. Tente novamente mais tarde...')
@@ -412,6 +414,7 @@ export default function AdminView() {
           </div>
         </div>
       </div>
+      {blockingModalId && <BlockingModal blockingModalId={blockingModalId} />}
     </>
   )
 }
