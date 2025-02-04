@@ -84,7 +84,7 @@
   transition: 300ms ease-in-out;
 }
 
-.filtersContainer{
+.filtersContainer {
   width: 100%;
 }
 
@@ -198,8 +198,6 @@
   cursor: pointer;
   padding: 0.1rem 0.3rem;
 }
-
-
 
 .btnRouteView {
   background-color: var(--color-orange);
