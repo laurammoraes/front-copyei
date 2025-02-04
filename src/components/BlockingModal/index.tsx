@@ -36,7 +36,9 @@ export function BlockingModal({ blockingModalId }: BlockingModalProps) {
         <img className={style.blockingModalImage} src="/icons/drive.jpeg" alt="Logo Drive" />
         <span className={style.blockingModalText}>Aguarde enquanto carregamos o site no Google Drive.</span>
         <span className={style.blockingModalText}>Isso pode levar alguns minutos...</span>
-        <span className={style.blockingModalText}>Você será redirecionado após a finalização do processo!</span>
+        <div className={style.blockingModalLoadingDiv}>
+          <span className={style.blockingModalLoading}></span>
+        </div>
       </div>
     </>
   )
