@@ -130,6 +130,8 @@ export default function DriveWebsitesListView() {
                             <a
                               className={style.btnRouteView}
                               href={`https://${site.title}.zr0.online`}
+                              target="_blank"
+                              rel="noreferrer"
                               title="Visualizar site"
                               style={{ display: 'inline-flex' }}
                             >
