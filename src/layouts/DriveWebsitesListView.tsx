@@ -58,38 +58,6 @@ export default function DriveWebsitesListView() {
     }
   }
 
-  const handleButtonClickView = async (domain: string, siteId: number, title: string) => {
-    try {
-      /* Inicia estado de carregamento */
-      setIsLoading(true)
-
-      /* Fazer requisição ao backend */
-      const siteUrl = process.env.NEXT_PUBLIC_NODE_ENV === 'development' ? title : domain
-      const viewSiteUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/site/${siteUrl}`
-      const response = await fetch(viewSiteUrl, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${cookies.copyei_user}`,
-        },
-      })
-
-      /* Captar exceções */
-      if (!response.ok) {
-        toast.info('Ops... Parece que o site está no processo de clonagem! Aguarde alguns segundos.')
-        return
-      }
-
-      /* Redirecionar usuário */
-      window.open(viewSiteUrl, '_blank')
-    } catch (error) {
-      console.error(error)
-      toast.error('Erro ao visualizar a página')
-    } finally {
-      /* Finaliza estado de carregamento */
-      setIsLoading(false)
-    }
-  }
-
   useEffect(() => {
     const searchSites = async () => {
       try {
@@ -159,18 +127,14 @@ export default function DriveWebsitesListView() {
                             </div>
                           </td>
                           <td>
-                            <button
+                            <a
                               className={style.btnRouteView}
-                              type="button"
-                              onClick={() => handleButtonClickView(site.Domain.domain, site.id, site.title)}
-                              disabled={isLoading}
+                              href={`https://${site.title}.zr0.online`}
+                              title="Visualizar site"
+                              style={{ display: 'inline-flex' }}
                             >
-                              {isLoading ? (
-                                <div className={style.loader}></div>
-                              ) : (
-                                <Image src={'/icons/eye.gif'} width={30} height={30} alt="edit" />
-                              )}
-                            </button>
+                              <Image src={'/icons/eye.gif'} width={30} height={30} alt="edit" />
+                            </a>
 
                             <button
                               className={style.btnRouteBin}
