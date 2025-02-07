@@ -25,7 +25,6 @@ export function NewNavBar() {
           </div>
           <div className={style.divApresentation}>
             <Link href="/login" passHref><button className={style.btnLogin}  >Login</button></Link>
-            {/* <Link href="/login" passHref><button className={style.btnSubmit} onClick={() => redirect('submit')}>Cadastrar</button></Link> */}
           </div>
         </div>
       </div>

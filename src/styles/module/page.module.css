@@ -426,3 +426,54 @@
   transition: all;
   border: 1px solid #a3a3a3;
 }
+
+.bannerLp {
+  background-color: var(--color-purple);
+  width: 100%;
+  padding: 10%;
+}
+
+.bannerLp h2 {
+  color: var(--color-white);
+  font-size: 35px;
+}
+
+.bannerLp h4{
+  color: var(--color-white);
+  font-size: 20px;
+  margin-top: 1%;
+  
+}
+
+.buttonLp{
+  background-color: var(--color-white);
+  color: var(--color-purple);
+  padding: 1%;
+  border-color: transparent;
+  border-radius: 5%;
+  margin-top: 2%;
+  font-size: 15px;
+  padding-left: 5%;
+  padding-right: 5%;
+  
+
+}
+
+.imageBannerLp{
+  align-items: flex-end;
+  
+}
+
+.pageContainerLp {
+  display: flex;
+ 
+}
+
+.containerLp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+
