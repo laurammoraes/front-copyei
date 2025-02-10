@@ -1,43 +1,42 @@
-.topBar{
-    display: flex;
-    width: 100%;
-    position: relative;
+.topBar {
+  display: flex;
+  width: 100%;
+  position: relative;
 }
 
-.containerAll{
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    height: 80px;
-    background-color: white;
+.containerAll {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  height: 80px;
+  background-color: white;
 }
-.divExitButton{
-    display: flex;
-    align-items: center;
-    padding: 0.5rem;
+.divExitButton {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
 }
-.buttonExit{
-    background-color: transparent;
-    border: 0.1rem solid transparent;
-    cursor: pointer;
+.buttonExit {
+  background-color: transparent;
+  border: 0.1rem solid transparent;
+  cursor: pointer;
 }
-.divApresentation{
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 2rem;
-    
+.divApresentation {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem;
 }
-.apresentation{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+.apresentation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
-.title{
-    font-weight: 500;
+.title {
+  font-weight: 500;
 }
-.markText{
-    color: var(--color-purple-dark);
-    font-weight: 200;
+.markText {
+  color: var(--color-purple-dark);
+  font-weight: 200;
 }

@@ -30,27 +30,27 @@
   justify-content: center;
   flex-direction: column;
 }
-.input{
-    font-family: var(--font-lexend);
-    border: 0.1rem solid var(--color-purple-dark);
-    border-radius: 0.2rem;
-    outline: none;
-    margin-top: 0.2rem;
-    padding: 0.8rem;
+.input {
+  font-family: var(--font-lexend);
+  border: 0.1rem solid var(--color-purple-dark);
+  border-radius: 0.2rem;
+  outline: none;
+  margin-top: 0.2rem;
+  padding: 0.8rem;
 }
 
-.btn{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--color-purple);
-    color: var(--color-white);
-    font-family: var(--font-lexend);
-    border-radius: 0.2rem;
-    border: 0.1rem solid var(--color-purple-dark);
-    cursor: pointer;
-    width: 12.1rem;
-    padding: 0.8rem;
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-purple);
+  color: var(--color-white);
+  font-family: var(--font-lexend);
+  border-radius: 0.2rem;
+  border: 0.1rem solid var(--color-purple-dark);
+  cursor: pointer;
+  width: 12.1rem;
+  padding: 0.8rem;
 }
 .btn:focus {
   background-color: var(--color-purple-dark);
