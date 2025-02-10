@@ -1,53 +1,51 @@
 .sideBar {
-    width: 18rem;
-    height: 100vh;
-    background-color: white;
-    overflow: hidden;
-    position: absolute;
-    overflow-y: auto;
-    top: 0;
-    border-right: 0.1rem solid var(--color-grey-sideBar);
+  width: 18rem;
+  height: 100vh;
+  background-color: white;
+  overflow: hidden;
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  border-right: 0.1rem solid var(--color-grey-sideBar);
 }
 
 .divContentSideBar {
-    display: flex;
-    flex-direction: column;
-
+  display: flex;
+  flex-direction: column;
 }
 
 .divMyPagesSideBar {
-    display: flex;
-    flex-direction: column;
-    margin: 1rem;
-    gap: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  gap: 0.4rem;
 }
 
 .logo {
-    font-size: 2rem;
-    text-align: center;
-    margin-top: 2rem;
-    font-family: var(--font-star-killer);
-    text-decoration: none;
-    color: var(--color-purple-dark);
-    margin-bottom: 2rem;
+  font-size: 2rem;
+  text-align: center;
+  margin-top: 2rem;
+  font-family: var(--font-star-killer);
+  text-decoration: none;
+  color: var(--color-purple-dark);
+  margin-bottom: 2rem;
 }
 
 .titleLinks {
-    color: var(--color-grey);
+  color: var(--color-grey);
 }
 
 .Link {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    background-color: var(--color-transparent);
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    gap: 0.5rem;
-    color: var(--color-purple);
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  background-color: var(--color-transparent);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  gap: 0.5rem;
+  color: var(--color-purple);
 }
 
 .Link img {
-    vertical-align: middle;
-
+  vertical-align: middle;
 }

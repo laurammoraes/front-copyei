@@ -1,9 +1,9 @@
-'use client';
+'use client'
 
-import Image from 'next/image';
-import style from './style.module.css';
+import Image from 'next/image'
+import style from './style.module.css'
 import { redirect } from 'next/navigation'
-import Link from 'next/link';
+import Link from 'next/link'
 
 export function NewNavBar() {
   return (
@@ -24,10 +24,12 @@ export function NewNavBar() {
             />
           </div>
           <div className={style.divApresentation}>
-            <Link href="/login" passHref><button className={style.btnLogin}  >Login</button></Link>
+            <Link href="/login" passHref>
+              <button className={style.btnLogin}>Login</button>
+            </Link>
           </div>
         </div>
       </div>
     </>
-  );
+  )
 }
