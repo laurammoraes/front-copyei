@@ -426,3 +426,253 @@
   transition: all;
   border: 1px solid #a3a3a3;
 }
+
+.bannerLp {
+  background-color: var(--color-purple);
+  width: 100%;
+  padding-left: 10%;
+  padding-right: 10%;
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+ 
+
+}
+
+.bannerLp h1 {
+  color: var(--color-white);
+  font-size: 35px;
+}
+
+.bannerLp h2{
+  color: var(--color-white);
+  font-size: 20px;
+  margin-top: 1%;
+  
+  
+}
+
+.buttonLp {
+  background-color: var(--color-white);
+  color: var(--color-purple);
+  padding: 15px 50px;
+  border: none;
+  border-radius: 5px;
+  font-size: 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-top: 3%;
+}
+
+.buttonLp:hover {
+  background-color: var(--color-purple);
+  color: var(--color-white);
+  transform: scale(1.1);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+
+
+.imageBanner {
+  width: 50%; 
+  display: flex;
+  justify-content: center;
+}
+
+.imageBannerLp {
+  width: 100%; 
+  height: auto;
+
+}
+
+.pageContainerLp {
+ 
+  background-color: var(--color-white);
+  border: 1px solid #ccc; 
+  height: 100vh;
+  min-height: 100vh; 
+  overflow-y: auto; 
+  overflow-x: hidden;
+  justify-content: space-between;
+ 
+
+}
+
+
+
+.containerLp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  flex-grow: 1;
+ 
+}
+
+.textLp{
+  padding: 10%;
+  align-items: center;
+  text-align: center;
+}
+
+.textLp h3{
+  font-size: 35px;
+}
+
+.textLp p{
+  font-size: 20px;
+  margin: 2%;
+}
+
+.featuresSection {
+  padding: 5% 5%;
+  background-color: #F8F9FA; 
+  text-align: center;
+}
+
+.featuresTitle {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: var(--color-black);
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 20px;
+}
+
+.featureIcon {
+  color: var(--color-purple); 
+  font-size: 5px; 
+}
+
+.featureCard {
+  background-color: var(--color-white);
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.featureCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.featureIcon {
+  margin-bottom: 10px;
+}
+
+.featureTitle {
+  font-size: 18px;
+  color: var(--color-purple);
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.featureDescription {
+  font-size: 16px;
+  color: #555;
+}
+
+.howItWorksSection {
+  padding: 3rem 1rem;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.howItWorksTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.stepsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+
+.stepCard {
+  position: relative;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.stepCard:hover {
+  transform: scale(1.05);
+}
+.stepNumber {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-purple);
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+.stepTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #444;
+  margin-top: 1.5rem;
+}
+
+.stepDescription {
+  font-size: 1rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.container {
+  background-color: white;
+  width: 100%;
+  height: 150px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.logoWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+
+@media (max-width: 768px) {
+  .bannerLp {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .featuresGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .stepsGrid {
+    flex-direction: column;
+  }
+}

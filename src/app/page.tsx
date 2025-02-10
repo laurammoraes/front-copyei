@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation'
+import LandingPageView from '@/layouts/LandingPageView'
 
 export default function Home() {
-  redirect('/admin')
+  return <LandingPageView/>
 }

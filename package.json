@@ -8,6 +8,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "@hookform/resolvers": "^3.6.0",
     "@phosphor-icons/react": "^2.1.7",
     "@radix-ui/react-dialog": "^1.1.1",
@@ -16,6 +18,7 @@
     "next": "^14.2.4",
     "nookies": "^2.5.2",
     "react": "^18",
+    "react-custom-scrollbars-2": "^4.5.0",
     "react-dom": "^18",
     "react-hook-form": "^7.52.0",
     "react-select": "^5.8.1",
