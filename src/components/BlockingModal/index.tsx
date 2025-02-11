@@ -4,6 +4,7 @@ import { connect } from 'socket.io-client'
 import style from './styles.module.css'
 import { useRouter } from 'next/navigation'
 
+
 interface BlockingModalProps {
   blockingModalId: string
 }

@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import style from './style.module.css'
+import React from 'react'
 
 export function Footer() {
   return (

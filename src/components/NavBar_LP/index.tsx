@@ -4,6 +4,7 @@ import Image from 'next/image'
 import style from './style.module.css'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import React from 'react'
 
 export function NewNavBar() {
   return (

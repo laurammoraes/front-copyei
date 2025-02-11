@@ -32,7 +32,7 @@ export default function AdminView() {
   const [blockingModalId, setBlockingModalId] = useState<string | null>(null)
   const cookies = parseCookies()
   const router = useRouter()
-  const { user } = useContext(UserContext)
+
 
   const handleButtonClickDelete = async (siteId: number) => {
     try {

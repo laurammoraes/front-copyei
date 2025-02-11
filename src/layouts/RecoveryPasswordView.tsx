@@ -20,7 +20,7 @@ const RecoveryPasswordSchema = z.object({
 type RecoveryPasswordType = z.infer<typeof RecoveryPasswordSchema>
 
 export default function RecoveryPasswordView() {
-  const router = useRouter()
+
   const [isLoading, setIsLoading] = useState(false)
   const methods = useForm<RecoveryPasswordType>({
     resolver: zodResolver(RecoveryPasswordSchema),
@@ -28,7 +28,7 @@ export default function RecoveryPasswordView() {
       email: undefined,
     },
   })
-  const { handleSubmit, setError } = methods
+  const { handleSubmit } = methods
   async function handleRegister(formsData: RecoveryPasswordType) {
     try {
       setIsLoading(true)
@@ -47,7 +47,7 @@ export default function RecoveryPasswordView() {
 
       toast.info('E-mail enviado com sucesso!')
     } catch (error) {
-      console.log(error)
+      
       toast.error('Ocorreu um erro. Tente novamente mais tarde...')
     } finally {
       setIsLoading(false)
