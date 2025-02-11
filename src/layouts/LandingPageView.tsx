@@ -1,4 +1,5 @@
 import { NewNavBar } from '@/components/NavBar_LP'
+import React from 'react'
 import style from '../styles/module/page.module.css'
 import Link from 'next/link'
 import Image from 'next/image'
