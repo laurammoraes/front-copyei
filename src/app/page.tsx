@@ -1,6 +1,5 @@
-import LandingPageView from '@/layouts/LandingPageView'
-import React from 'react'
+import { redirect } from 'next/navigation'
 
 export default function Home() {
-  return <LandingPageView />
+  redirect('/admin')
 }
