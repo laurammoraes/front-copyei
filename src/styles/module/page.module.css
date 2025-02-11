@@ -435,17 +435,22 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  
 }
 
 .bannerLp h1 {
   color: var(--color-white);
-  font-size: 35px;
+  font-size: 45px;
+  
 }
 
 .bannerLp h2 {
   color: var(--color-white);
-  font-size: 20px;
+  font-size: 25px;
   margin-top: 1%;
+ 
+
+ 
 }
 
 .buttonLp {
@@ -534,6 +539,7 @@
 .featureIcon {
   color: var(--color-purple);
   font-size: 5px;
+  max-width: 40%;
 }
 
 .featureCard {
@@ -654,6 +660,15 @@
   .bannerLp {
     flex-direction: column;
     text-align: center;
+    padding: 20%;
+  }
+
+  .imageBanner{
+    display: none;
+  }
+
+  .featureIcon{
+    max-width: 30%;
   }
 
   .featuresGrid {

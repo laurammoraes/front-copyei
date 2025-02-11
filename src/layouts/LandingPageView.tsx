@@ -59,9 +59,9 @@ export default function LandingPageView() {
         <div className={style.containerLp}>
           <div className={style.bannerLp}>
             <div className={style.contentBanner}>
-              <h1>Clone, Edite e Converta com Alta Performance 🚀</h1>
+              <h1>Clone, Edite e Converta com Alta Performance </h1>
               <h2>
-                A ferramenta definitiva para capturar, personalizar <br /> e lançar landing pages vencedoras.
+                A ferramenta definitiva para capturar, personalizar e lançar landing pages vencedoras.
               </h2>
               <Link href="/login" passHref>
                 <button className={style.buttonLp}>Acessar</button>
