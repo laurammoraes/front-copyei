@@ -210,7 +210,7 @@ export default function ClonedView() {
                     className={style.input}
                     placeholder="Ex.: MeuSite.com"
                     value={titleSite}
-                    onChange={(e) => setTitleSite(e.target.value)}
+                    onChange={(e) => setTitleSite(e.target.value.toLowerCase())}
                   />
                 </div>
 
