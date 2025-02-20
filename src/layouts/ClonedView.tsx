@@ -97,7 +97,7 @@ export default function ClonedView() {
         return
       }
       if (data?.message && data?.message === 'Site já existente') {
-        toast.info('Já existe um site com esse nome.')
+        toast.info('Já existe um site com esse nome. Dê um nome diferente')
         return
       }
       if (
