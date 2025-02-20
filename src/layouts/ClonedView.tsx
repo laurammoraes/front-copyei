@@ -236,6 +236,7 @@ export default function ClonedView() {
                     className={style.input}
                     placeholder="Ex.: https://clone.com.br"
                     value={urlSiteToClone}
+                    maxLength={245}
                     onChange={(e) => setUrlSiteToClone(e.target.value)}
                   />
                 </div>
