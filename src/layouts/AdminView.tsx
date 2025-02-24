@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { toast } from 'react-toastify'
@@ -10,7 +10,6 @@ import { fetchAPI } from '@/utils/fetchAPI'
 import { AsideBar } from '@/components/AsideBar'
 import { NavBar } from '@/components/NavBar'
 import style from '../styles/module/page.module.css'
-import { UserContext } from '@/contexts/UserContext'
 import { BlockingModal } from '@/components/BlockingModal'
 
 /* Define o tipo de dados para os sites */
@@ -61,7 +60,7 @@ export default function AdminView() {
       /* Finaliza estado de carregamento */
       setIsLoading(false)
     }
-  }
+}
 
   const handleButtonClickView = async (domain: string, siteId: number, title: string) => {
     try {

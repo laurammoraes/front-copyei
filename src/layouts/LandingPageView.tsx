@@ -1,13 +1,34 @@
+"use client";
+
 import { NewNavBar } from '@/components/NavBar_LP'
-import React from 'react'
+import React, { useEffect } from 'react'
 import style from '../styles/module/page.module.css'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Footer } from '@/components/Footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy, faCode, faPenToSquare, faChartLine, faMoneyBill, faBullseye } from '@fortawesome/free-solid-svg-icons'
+import { toast } from 'react-toastify'
 
 export default function LandingPageView() {
+  
+  useEffect(() => {
+    const toastId = "copyei-access-warning";
+  
+    if (!toast.isActive(toastId)) {
+      toast.info("O acesso à plataforma COPYEI é exclusivo para membros da Comunidade Black do Josué Bonfim.", {
+        position: "top-center",
+        autoClose: false,
+        closeOnClick: true,
+        draggable: true,
+        toastId,
+        className: style.largeToast,
+      });
+    }
+  }, []);
+  
+  
+
   const features = [
     {
       icon: faCopy,
