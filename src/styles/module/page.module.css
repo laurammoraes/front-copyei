@@ -11,6 +11,41 @@
   flex: 1;
 }
 
+.containerPageText{
+  
+  height: 100%;
+  
+}
+
+.formatTxt {
+  height: 100vh;
+  overflow-y: auto; 
+  border: 1px solid #ccc;
+  background-color: var(--color-white);
+  padding: 100px; 
+  
+}
+
+.formatTxt h4{
+  font: bolder;
+  margin-top: 2%;
+  margin-bottom: 2%
+}
+
+.formatTxt h2{
+  font: bolder;
+  margin-top: 2%;
+  margin-bottom: 2%
+}
+
+.formatTxt h3{
+  font: bolder;
+  margin-top: 2%;
+  margin-bottom: 2%
+}
+
+
+
 .content {
   overflow-y: auto;
   background-color: var(--color-white);
