@@ -31,6 +31,7 @@ export default function AdminView() {
   const [blockingModalId, setBlockingModalId] = useState<string | null>(null)
   const cookies = parseCookies()
   const router = useRouter()
+  
 
 
   const handleButtonClickDelete = async (siteId: number) => {
@@ -413,7 +414,7 @@ export default function AdminView() {
           </div>
         </div>
       </div>
-      {blockingModalId && <BlockingModal blockingModalId={blockingModalId} />}
+      {blockingModalId && <BlockingModal blockingModalId={blockingModalId} setBlockingModalId={setBlockingModalId}  />}
     </>
   )
 }

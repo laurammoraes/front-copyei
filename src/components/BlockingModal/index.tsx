@@ -11,6 +11,7 @@ interface BlockingModalProps {
 }
 
 export function BlockingModal({ blockingModalId, setBlockingModalId }: BlockingModalProps) {
+  
   const router = useRouter();
 
   useEffect(() => {
