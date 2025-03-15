@@ -14,21 +14,30 @@ export function BlockingModal({ blockingModalId }: BlockingModalProps) {
 
   useEffect(() => {
     if (!blockingModalId) return
-
+  
     const socket = connect(process.env.NEXT_PUBLIC_WEBSOCKET_BASE_URL!)
-
-    socket.emit('join', `uploading-${blockingModalId}`)
-
-    socket.on('update-loading-state', (website) => {
+  
+    socket.emit("join", `uploading-${blockingModalId}`)
+  
+    socket.on("update-loading-state", (website) => {
       if (website === blockingModalId) {
-        router.push('/admin/drive-websites')
+        router.push("/admin/drive-websites")
       }
     })
-
+  
+    socket.on("upload-error", (data) => {
+      if (data.website === blockingModalId) {
+        console.error(`Erro no upload: ${data.error}`)
+        alert(`Erro ao fazer upload do site: ${data.error}`) // Ou exibir de outra forma
+      }
+    })
+  
     return () => {
-      socket.off('update-loading-state')
+      socket.off("update-loading-state")
+      socket.off("upload-error") // Removendo o listener do erro
     }
   }, [blockingModalId])
+  
 
   return (
     <>
