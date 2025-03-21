@@ -1,3 +1,4 @@
+
 import { PrivacyPolicyView } from '@/layouts/PrivacyPolicyView'
 import React from 'react'
 
