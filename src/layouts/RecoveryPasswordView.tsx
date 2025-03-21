@@ -20,7 +20,6 @@ const RecoveryPasswordSchema = z.object({
 type RecoveryPasswordType = z.infer<typeof RecoveryPasswordSchema>
 
 export default function RecoveryPasswordView() {
-
   const [isLoading, setIsLoading] = useState(false)
   const methods = useForm<RecoveryPasswordType>({
     resolver: zodResolver(RecoveryPasswordSchema),
@@ -47,7 +46,6 @@ export default function RecoveryPasswordView() {
 
       toast.info('E-mail enviado com sucesso!')
     } catch (error) {
-      
       toast.error('Ocorreu um erro. Tente novamente mais tarde...')
     } finally {
       setIsLoading(false)

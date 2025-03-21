@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import { NewNavBar } from '@/components/NavBar_LP'
 import React, { useEffect } from 'react'
@@ -11,23 +11,20 @@ import { faCopy, faCode, faPenToSquare, faChartLine, faMoneyBill, faBullseye } f
 import { toast } from 'react-toastify'
 
 export default function LandingPageView() {
-  
   useEffect(() => {
-    const toastId = "copyei-access-warning";
-  
+    const toastId = 'copyei-access-warning'
+
     if (!toast.isActive(toastId)) {
-      toast.info("O acesso à plataforma COPYEI é exclusivo para membros da Comunidade Black do Josué Bonfim.", {
-        position: "top-center",
+      toast.info('O acesso à plataforma COPYEI é exclusivo para membros da Comunidade Black do Josué Bonfim.', {
+        position: 'top-center',
         autoClose: false,
         closeOnClick: true,
         draggable: true,
         toastId,
         className: style.largeToast,
-      });
+      })
     }
-  }, []);
-  
-  
+  }, [])
 
   const features = [
     {
@@ -81,9 +78,7 @@ export default function LandingPageView() {
           <div className={style.bannerLp}>
             <div className={style.contentBanner}>
               <h1>Clone, Edite e Converta com Alta Performance </h1>
-              <h2>
-                A ferramenta definitiva para capturar, personalizar e lançar landing pages vencedoras.
-              </h2>
+              <h2>A ferramenta definitiva para capturar, personalizar e lançar landing pages vencedoras.</h2>
               <Link href="/login" passHref>
                 <button className={style.buttonLp}>Acessar</button>
               </Link>
