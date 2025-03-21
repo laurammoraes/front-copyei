@@ -1,5 +1,5 @@
 'use client'
-
+import React from 'react'
 import { useSearchParams } from 'next/navigation'
 import style from '../styles/module/login-register.module.css'
 
@@ -12,7 +12,9 @@ export default function ErrorView() {
       <div className={style.form}>
         <h1 className={style.logo}>COPYEI</h1>
         <p className={style.errorMessage}>{message}</p>
-        <a className={style.link} href="/">Voltar para o início</a>
+        <a className={style.link} href="/">
+          Voltar para o início
+        </a>
       </div>
     </div>
   )

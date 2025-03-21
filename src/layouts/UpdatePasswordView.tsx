@@ -70,7 +70,6 @@ export function UpdatePasswordView() {
         }
       }
 
-    
       if (!registerResponse.ok) throw new Error('Ocorreu um erro. Tente novamente mais tarde...')
 
       toast.info('Senha alterada com sucesso')
