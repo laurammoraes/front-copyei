@@ -38,6 +38,8 @@ export default function DomainView() {
       })
       const { data } = createDomainResponse
 
+      console.log(createDomainResponse)
+
       if (data?.message && data?.message === 'Este domínio já está cadastrado') {
         toast.info('Domínio já existente.')
         return
