@@ -7,7 +7,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'react-toastify'
 
-import { fetchAPI } from '@/utils/fetchAPI'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import style from '../styles/module/login-register.module.css'
@@ -43,8 +42,8 @@ export function LoginView() {
       /* Iniciar estado de carregamento */
       setIsLoading(true)
 
-      /* Fazer requisição para backend */
-      const loginResponse = await fetchAPI<{ message?: string }>('/login', {
+      /* Fazer requisição via API route do Next.js (same-origin) - garante que o cookie seja setado no domínio correto em produção */
+      const res = await fetch('/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,21 +54,35 @@ export function LoginView() {
         }),
         credentials: 'include',
       })
-      const { data } = loginResponse
+      const data = (await res.json()) as {
+        message?: string
+        reason?: string
+        hint?: string
+        detail?: string
+      }
 
       /* Captar exceções */
       if (data?.message && data?.message === 'Invalid Credentials') {
         setError('email', { message: 'Email ou senha inválidos' })
         return
       }
-      if (!loginResponse.ok) throw new Error('Ocorreu um erro. Tente novamente mais tarde...')
+      if (!res.ok) {
+        const errMsg =
+          data?.reason === 'NO_TOKEN'
+            ? 'Backend não retornou token. Verifique se a API retorna copyei_user no cookie ou token no JSON.'
+            : data?.reason === 'BACKEND_NON_JSON'
+              ? 'Resposta inválida do backend. Verifique a URL da API.'
+              : data?.detail || data?.message || 'Ocorreu um erro. Tente novamente mais tarde.'
+        throw new Error(errMsg)
+      }
 
       /* Mensagem de sucesso e redirecionamento para /admin */
       toast.info('Login realizado com sucesso!')
       router.push('/admin')
     } catch (error) {
       console.error(error)
-      toast.error('Ocorreu um erro. Tente novamente mais tarde...')
+      const msg = error instanceof Error ? error.message : 'Ocorreu um erro. Tente novamente mais tarde.'
+      toast.error(msg)
     } finally {
       /* Finalizar estado de carregamento */
       setIsLoading(false)

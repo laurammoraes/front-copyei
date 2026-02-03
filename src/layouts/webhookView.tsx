@@ -8,7 +8,7 @@ import { NavBar } from '@/components/NavBar'
 import { AsideBar } from '@/components/AsideBar'
 
 export default function QueryUrlGenerator() {
-  const [baseUrl] = useState('https://app.copyei.com/api/payment/actionAccount')
+  const [baseUrl] = useState('https://app.copyei.online/api/payment/actionAccount')
   const [queries, setQueries] = useState([
     { key: 'plan_type', label: 'Tipo do plano', value: 'anual' },
     { key: 'daysUntilActivation', label: 'Dias para Ativação', value: '' },

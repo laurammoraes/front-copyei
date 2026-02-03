@@ -4,8 +4,6 @@ import React, { createContext, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
 
-import { fetchAPI } from '@/utils/fetchAPI'
-
 interface UserContext {
   user: JWT_User | null
   logout(): Promise<void>
@@ -23,7 +21,7 @@ export function UserProvider({ children, userData }: ProviderProps): JSX.Element
 
   async function logout() {
     try {
-      await fetchAPI('/logout', {
+      await fetch('/api/logout', {
         method: 'GET',
         credentials: 'include',
       })
