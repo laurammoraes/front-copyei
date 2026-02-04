@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { toast } from 'react-toastify'
-import { fetchAPI, getAuthHeaders } from '@/utils/fetchAPI'
+import { fetchAPI, getAuthHeaders, getAuthToken, TOKEN_KEY } from '@/utils/fetchAPI'
 import { AsideBar } from '@/components/AsideBar'
 import { NavBar } from '@/components/NavBar'
 import style from '../styles/module/page.module.css'
@@ -240,7 +240,11 @@ export default function AdminView() {
   useEffect(() => {
     const searchSites = async () => {
       try {
-        /* Fazer requisição para backend */
+        if (!getAuthToken()) {
+          const tokenRes = await fetch('/api/auth/token', { credentials: 'include' })
+          const { token } = (await tokenRes.json()) as { token?: string }
+          if (token) localStorage.setItem(TOKEN_KEY, token)
+        }
         const sitesResponse = await fetchAPI<{ sites?: Site[] }>('/searchSites?type=LOCAL', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },

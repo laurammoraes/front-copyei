@@ -77,9 +77,15 @@ export function LoginView() {
         throw new Error(errMsg)
       }
 
-      /* Salvar token no localStorage ANTES do redirect - necessário para requisições à API */
-      if (data?.token) {
-        localStorage.setItem('copyei_token', data.token)
+      /* Salvar token no localStorage ANTES do redirect - necessário para requisições à API (cross-origin) */
+      let tokenToSave = data?.token
+      if (!tokenToSave) {
+        const tokenRes = await fetch('/api/auth/token', { credentials: 'include' })
+        const tokenData = (await tokenRes.json()) as { token?: string }
+        tokenToSave = tokenData?.token
+      }
+      if (tokenToSave) {
+        localStorage.setItem('copyei_token', tokenToSave)
       }
 
       toast.info('Login realizado com sucesso!')

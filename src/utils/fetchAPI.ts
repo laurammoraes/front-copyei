@@ -2,7 +2,9 @@ export const TOKEN_KEY = 'copyei_token'
 
 export function getAuthToken(): string | null {
   if (typeof window === 'undefined') return null
-  return localStorage.getItem(TOKEN_KEY)
+  const token = localStorage.getItem(TOKEN_KEY)
+  if (!token || token === 'undefined' || token === 'null') return null
+  return token
 }
 
 export function getAuthHeaders(): Record<string, string> {
@@ -11,13 +13,20 @@ export function getAuthHeaders(): Record<string, string> {
   return { Authorization: `Bearer ${token}` }
 }
 
+function buildHeaders(init?: RequestInit): Headers {
+  const headers = new Headers(init?.headers)
+  const token = getAuthToken()
+  if (token) {
+    headers.set('Authorization', `Bearer ${token}`)
+  } else if (headers.has('Authorization')) {
+    headers.delete('Authorization')
+  }
+  return headers
+}
+
 export async function fetchAPI<T = unknown>(url: RequestInfo | URL, init?: RequestInit) {
   try {
-    const authHeaders = getAuthHeaders()
-    const headers = new Headers(init?.headers)
-    if (authHeaders.Authorization && !headers.has('Authorization')) {
-      headers.set('Authorization', authHeaders.Authorization)
-    }
+    const headers = buildHeaders(init)
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${url}`, {
       ...init,
