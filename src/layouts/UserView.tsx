@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useParams } from 'next/navigation'
 
-import { getAuthHeaders } from '@/utils/fetchAPI'
 
 import style from '../styles/module/page.module.css'
 import { AsideBar } from '@/components/AsideBar'
@@ -167,18 +166,10 @@ export function UserView() {
   const fetchUser = async () => {
     try {
       setLoading(true)
-      const headers = { 'Content-Type': 'application/json', ...getAuthHeaders() }
+      const opts = { credentials: 'include' as const, cache: 'no-cache' as RequestCache }
       const [userResponse, logsResponse] = await Promise.all([
-        fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/user/list/${params.id}`, {
-          headers,
-          credentials: 'include',
-          cache: 'no-cache',
-        }),
-        fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/logs/${params.id}`, {
-          headers,
-          credentials: 'include',
-          cache: 'no-cache',
-        }),
+        fetch(`/api/proxy/users/user/list/${params.id}`, opts),
+        fetch(`/api/proxy/users/logs/${params.id}`, opts),
       ])
 
       const userData = await userResponse.json()
@@ -226,13 +217,10 @@ export function UserView() {
 
     try {
       setLoading(true)
-      const endpoint = user?.usageDuration.isPaused
-        ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/user/active/${params.id}`
-        : `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/user/pause/${params.id}`
-
-      const response = await fetch(endpoint, {
+      const path = user?.usageDuration.isPaused ? 'users/user/active' : 'users/user/pause'
+      const response = await fetch(`/api/proxy/${path}/${params.id}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
       })
 
@@ -261,9 +249,9 @@ export function UserView() {
 
     try {
       setLoading(true)
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/user/delete/${params.id}`, {
+      const response = await fetch(`/api/proxy/users/user/delete/${params.id}`, {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
       })
 

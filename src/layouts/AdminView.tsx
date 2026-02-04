@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { toast } from 'react-toastify'
-import { fetchAPI, getAuthHeaders, getAuthToken, TOKEN_KEY } from '@/utils/fetchAPI'
+import { fetchAPI } from '@/utils/fetchAPI'
 import { AsideBar } from '@/components/AsideBar'
 import { NavBar } from '@/components/NavBar'
 import style from '../styles/module/page.module.css'
@@ -62,12 +62,7 @@ export default function AdminView() {
 
       /* Fazer requisição ao backend */
       const siteUrl = process.env.NEXT_PUBLIC_NODE_ENV === 'development' ? title : domain
-      const viewSiteUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/site/${siteUrl}`
-      const response = await fetch(viewSiteUrl, {
-        method: 'GET',
-        credentials: 'include',
-        headers: getAuthHeaders(),
-      })
+      const response = await fetch(`/api/proxy/site/${siteUrl}`, { credentials: 'include' })
 
       /* Captar exceções */
       if (!response.ok) {
@@ -75,8 +70,7 @@ export default function AdminView() {
         return
       }
 
-      /* Redirecionar usuário */
-      window.open(viewSiteUrl, '_blank')
+      window.open(`/api/proxy/site/${siteUrl}`, '_blank')
     } catch (error) {
       console.error(error)
       toast.error('Erro ao visualizar a página')
@@ -98,12 +92,7 @@ export default function AdminView() {
 
       /* Fazer requisição ao backend */
       const siteUrl = process.env.NEXT_PUBLIC_NODE_ENV === 'development' ? title : domain
-      const viewSiteUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/download/${siteUrl}`
-      const response = await fetch(viewSiteUrl, {
-        method: 'GET',
-        credentials: 'include',
-        headers: getAuthHeaders(),
-      })
+      const response = await fetch(`/api/proxy/download/${siteUrl}`, { credentials: 'include' })
 
       /* Captar exceções */
       if (!response.ok) throw new Error('Ocorreu um erro ao fazer download do site. Tente novamente mais tarde...')
@@ -142,17 +131,11 @@ export default function AdminView() {
 
       /* Fazer requisição ao backend */
       const siteUrl = process.env.NEXT_PUBLIC_NODE_ENV === 'development' ? title : domain
-      const editSiteUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/editor/${siteUrl}`
-      const response = await fetch(editSiteUrl, {
-        method: 'GET',
-        credentials: 'include',
-        headers: getAuthHeaders(),
-      })
+      const response = await fetch(`/api/proxy/editor/${siteUrl}`, { credentials: 'include' })
 
       if (!response.ok) throw new Error('Ocorreu um erro ao abrir o editor. Tente novamente mais tarde...')
 
-      /* Redirecionar usuário ao editor */
-      window.open(editSiteUrl, '_blank')
+      window.open(`/api/proxy/editor/${siteUrl}`, '_blank')
     } catch (error) {
       console.error(error)
       toast.error('Ocorreu um erro ao abrir o editor. Tente novamente mais tarde...')
@@ -174,12 +157,7 @@ export default function AdminView() {
 
       /* Fazer requisição ao backend */
       const siteUrl = process.env.NEXT_PUBLIC_NODE_ENV === 'development' ? title : domain
-      const viewSiteUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/download/${siteUrl}/html`
-      const response = await fetch(viewSiteUrl, {
-        method: 'GET',
-        credentials: 'include',
-        headers: getAuthHeaders(),
-      })
+      const response = await fetch(`/api/proxy/download/${siteUrl}/html`, { credentials: 'include' })
 
       /* Captar exceções */
       if (!response.ok) throw new Error('Ocorreu um erro ao baixar HTML. Tente novamente mais tarde...')
@@ -218,7 +196,7 @@ export default function AdminView() {
 
       /* Redirecionar usuário a tela de login social com o Google, caso o usuário não esteja com o token do Google */
       if (response.data?.message && response.data?.message === 'O usuário precisa logar com o Google') {
-        const googleAuthEndpoint = `${process.env.NEXT_PUBLIC_API_BASE_URL}/google/auth`
+        const googleAuthEndpoint = '/api/proxy/google/auth'
         router.push(googleAuthEndpoint)
         return
       }
@@ -240,11 +218,6 @@ export default function AdminView() {
   useEffect(() => {
     const searchSites = async () => {
       try {
-        if (!getAuthToken()) {
-          const tokenRes = await fetch('/api/auth/token', { credentials: 'include' })
-          const { token } = (await tokenRes.json()) as { token?: string }
-          if (token) localStorage.setItem(TOKEN_KEY, token)
-        }
         const sitesResponse = await fetchAPI<{ sites?: Site[] }>('/searchSites?type=LOCAL', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },

@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { toast } from 'react-toastify'
-import { getAuthHeaders } from '@/utils/fetchAPI'
 import style from '../styles/module/page.module.css'
 import { useRouter } from 'next/navigation'
 import { NavBar } from '@/components/NavBar'
@@ -63,11 +62,7 @@ export default function DashView() {
         status: filters.status,
       }).toString()
 
-      const searchUsers = `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/list?${searchParams}`
-
-      const response = await fetch(searchUsers, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+      const response = await fetch(`/api/proxy/users/list?${searchParams}`, {
         credentials: 'include',
         cache: 'no-cache',
       })
@@ -97,9 +92,7 @@ export default function DashView() {
 
   const handleDownloadSheet = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/download-sheet/all`, {
-        method: 'GET',
-        headers: getAuthHeaders(),
+      const response = await fetch('/api/proxy/users/download-sheet/all', {
         credentials: 'include',
       })
 

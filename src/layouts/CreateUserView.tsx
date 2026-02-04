@@ -2,7 +2,6 @@
 
 import React, { FormEvent, useState } from 'react'
 import { toast } from 'react-toastify'
-import { getAuthHeaders } from '@/utils/fetchAPI'
 import style from '../styles/module/page.module.css'
 import { NavBar } from '@/components/NavBar'
 import { AsideBar } from '@/components/AsideBar'
@@ -27,13 +26,11 @@ export default function CreateUserView() {
       return
     }
 
-    const urlCreateUser = `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/create`
-
     try {
       setLoading(true)
-      const response = await fetch(urlCreateUser, {
+      const response = await fetch('/api/proxy/users/create', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({ name, email }),
       })
@@ -67,9 +64,8 @@ export default function CreateUserView() {
 
     try {
       setUploadLoading(true)
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/upload-sheet/create-many-users`, {
+      const response = await fetch('/api/proxy/users/upload-sheet/create-many-users', {
         method: 'POST',
-        headers: getAuthHeaders(),
         credentials: 'include',
         body: formData,
       })

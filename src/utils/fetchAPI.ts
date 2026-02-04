@@ -13,25 +13,16 @@ export function getAuthHeaders(): Record<string, string> {
   return { Authorization: `Bearer ${token}` }
 }
 
-function buildHeaders(init?: RequestInit): Headers {
-  const headers = new Headers(init?.headers)
-  const token = getAuthToken()
-  if (token) {
-    headers.set('Authorization', `Bearer ${token}`)
-  } else if (headers.has('Authorization')) {
-    headers.delete('Authorization')
-  }
-  return headers
-}
+const toProxyPath = (url: RequestInfo | URL) =>
+  (typeof url === 'string' ? url : String(url)).replace(/^\//, '')
 
 export async function fetchAPI<T = unknown>(url: RequestInfo | URL, init?: RequestInit) {
   try {
-    const headers = buildHeaders(init)
-
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${url}`, {
+    const path = toProxyPath(url)
+    const response = await fetch(`/api/proxy/${path}`, {
       ...init,
       credentials: 'include',
-      headers,
+      headers: init?.headers ?? {},
     })
 
     const data = (await response.json()) as T
