@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { parseCookies } from 'nookies'
 import { useParams } from 'next/navigation'
+
+import { getAuthHeaders } from '@/utils/fetchAPI'
 
 import style from '../styles/module/page.module.css'
 import { AsideBar } from '@/components/AsideBar'
@@ -68,7 +69,6 @@ interface DataTableProps {
 }
 
 export function UserStatus({ user, onUpdate, loading }: UserStatusProps) {
-  const cookies = parseCookies()
   const [formData, setFormData] = useState({
     name: user.name,
     email: user.email,
@@ -160,7 +160,6 @@ export function DataTable({ title, columns, data }: DataTableProps) {
 }
 
 export function UserView() {
-  const cookies = parseCookies()
   const params = useParams()
   const [loading, setLoading] = useState(false)
   const [user, setUser] = useState<User | null>(null)
@@ -168,19 +167,16 @@ export function UserView() {
   const fetchUser = async () => {
     try {
       setLoading(true)
+      const headers = { 'Content-Type': 'application/json', ...getAuthHeaders() }
       const [userResponse, logsResponse] = await Promise.all([
         fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/user/list/${params.id}`, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${cookies.copyei_user}`,
-          },
+          headers,
+          credentials: 'include',
           cache: 'no-cache',
         }),
         fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/logs/${params.id}`, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${cookies.copyei_user}`,
-          },
+          headers,
+          credentials: 'include',
           cache: 'no-cache',
         }),
       ])
@@ -236,10 +232,8 @@ export function UserView() {
 
       const response = await fetch(endpoint, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${cookies.copyei_user}`,
-        },
+        headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+        credentials: 'include',
       })
 
       const data = await response.json()
@@ -269,10 +263,8 @@ export function UserView() {
       setLoading(true)
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/user/delete/${params.id}`, {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${cookies.copyei_user}`,
-        },
+        headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+        credentials: 'include',
       })
 
       const data = await response.json()

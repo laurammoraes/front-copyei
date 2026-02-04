@@ -3,8 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { toast } from 'react-toastify'
-import { parseCookies } from 'nookies'
-
+import { getAuthHeaders } from '@/utils/fetchAPI'
 import style from '../styles/module/page.module.css'
 import { useRouter } from 'next/navigation'
 import { NavBar } from '@/components/NavBar'
@@ -40,7 +39,6 @@ export default function DashView() {
     status: '',
   })
 
-  const cookies = parseCookies()
   const router = useRouter()
 
   const handleButtonClickView = async (id: string) => {
@@ -69,10 +67,8 @@ export default function DashView() {
 
       const response = await fetch(searchUsers, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${cookies.copyei_user}`,
-        },
+        headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+        credentials: 'include',
         cache: 'no-cache',
       })
 
@@ -93,7 +89,7 @@ export default function DashView() {
 
   useEffect(() => {
     searchUsers(currentPage)
-  }, [currentPage, filters, cookies.copyei_user])
+  }, [currentPage, filters])
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
@@ -103,9 +99,8 @@ export default function DashView() {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/download-sheet/all`, {
         method: 'GET',
-        headers: {
-          Authorization: `Bearer ${cookies.copyei_user}`,
-        },
+        headers: getAuthHeaders(),
+        credentials: 'include',
       })
 
       if (!response.ok) {

@@ -4,8 +4,6 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { toast } from 'react-toastify'
-import { parseCookies } from 'nookies'
-
 import { fetchAPI } from '@/utils/fetchAPI'
 import { AsideBar } from '@/components/AsideBar'
 import { NavBar } from '@/components/NavBar'
@@ -20,7 +18,6 @@ interface Domains {
 export default function ListDomainView() {
   const [domains, setDomains] = useState<Domains[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const cookies = parseCookies()
   const router = useRouter()
 
   /* Função para excluir o domínio */
@@ -32,10 +29,7 @@ export default function ListDomainView() {
       /* Fazer requisição para backend */
       const deleteDomainResponse = await fetchAPI('/domain', {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${cookies.copyei_user}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ domain }),
       })
 
@@ -60,10 +54,7 @@ export default function ListDomainView() {
         /* Fazer requisição para backend */
         const domainsResponse = await fetchAPI<{ domains?: Domains[] }>('/searchSites', {
           method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${cookies.copyei_user}`,
-          },
+          headers: { 'Content-Type': 'application/json' },
           cache: 'no-cache',
         })
         const { data } = domainsResponse

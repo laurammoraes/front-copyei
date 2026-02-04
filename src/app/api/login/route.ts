@@ -121,7 +121,7 @@ export async function POST(request: NextRequest) {
       maxAge: 60 * 60 * 24 * 7, // 7 dias
     })
 
-    return NextResponse.json({ message: 'OK' })
+    return NextResponse.json({ message: 'OK', token })
   } catch (error) {
     const err = error instanceof Error ? error : new Error(String(error))
     console.error('Login proxy error:', err)

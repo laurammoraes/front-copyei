@@ -4,9 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { toast } from 'react-toastify'
-import { parseCookies } from 'nookies'
-
-import { fetchAPI } from '@/utils/fetchAPI'
+import { fetchAPI, getAuthHeaders } from '@/utils/fetchAPI'
 import { AsideBar } from '@/components/AsideBar'
 import { NavBar } from '@/components/NavBar'
 import style from '../styles/module/page.module.css'
@@ -29,7 +27,6 @@ export default function AdminView() {
   const [sites, setSites] = useState<Site[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [blockingModalId, setBlockingModalId] = useState<string | null>(null)
-  const cookies = parseCookies()
   const router = useRouter()
 
   const handleButtonClickDelete = async (siteId: number) => {
@@ -40,10 +37,7 @@ export default function AdminView() {
       /* Fazer requisição ao backend */
       const response = await fetchAPI(`/aapanel/websites/${siteId}`, {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${cookies.copyei_user}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
       })
 
       /* Captar exceções */
@@ -71,9 +65,8 @@ export default function AdminView() {
       const viewSiteUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/site/${siteUrl}`
       const response = await fetch(viewSiteUrl, {
         method: 'GET',
-        headers: {
-          Authorization: `Bearer ${cookies.copyei_user}`,
-        },
+        credentials: 'include',
+        headers: getAuthHeaders(),
       })
 
       /* Captar exceções */
@@ -108,9 +101,8 @@ export default function AdminView() {
       const viewSiteUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/download/${siteUrl}`
       const response = await fetch(viewSiteUrl, {
         method: 'GET',
-        headers: {
-          Authorization: `Bearer ${cookies.copyei_user}`,
-        },
+        credentials: 'include',
+        headers: getAuthHeaders(),
       })
 
       /* Captar exceções */
@@ -153,9 +145,8 @@ export default function AdminView() {
       const editSiteUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/editor/${siteUrl}`
       const response = await fetch(editSiteUrl, {
         method: 'GET',
-        headers: {
-          Authorization: `Bearer ${cookies.copyei_user}`,
-        },
+        credentials: 'include',
+        headers: getAuthHeaders(),
       })
 
       if (!response.ok) throw new Error('Ocorreu um erro ao abrir o editor. Tente novamente mais tarde...')
@@ -186,9 +177,8 @@ export default function AdminView() {
       const viewSiteUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/download/${siteUrl}/html`
       const response = await fetch(viewSiteUrl, {
         method: 'GET',
-        headers: {
-          Authorization: `Bearer ${cookies.copyei_user}`,
-        },
+        credentials: 'include',
+        headers: getAuthHeaders(),
       })
 
       /* Captar exceções */
@@ -223,11 +213,7 @@ export default function AdminView() {
       /* Fazer requisição ao backend */
       const response = await fetchAPI<any>(`/websites/${domain}/upload-to-drive`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${cookies.copyei_user}`,
-        },
-        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
       })
 
       /* Redirecionar usuário a tela de login social com o Google, caso o usuário não esteja com o token do Google */
@@ -257,10 +243,7 @@ export default function AdminView() {
         /* Fazer requisição para backend */
         const sitesResponse = await fetchAPI<{ sites?: Site[] }>('/searchSites?type=LOCAL', {
           method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${cookies.copyei_user}`,
-          },
+          headers: { 'Content-Type': 'application/json' },
           cache: 'no-cache',
         })
         const { data } = sitesResponse
@@ -276,7 +259,7 @@ export default function AdminView() {
     }
 
     searchSites()
-  }, [cookies.copyei_user])
+  }, [])
 
   return (
     <>

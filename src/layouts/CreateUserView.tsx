@@ -2,7 +2,7 @@
 
 import React, { FormEvent, useState } from 'react'
 import { toast } from 'react-toastify'
-import { parseCookies } from 'nookies'
+import { getAuthHeaders } from '@/utils/fetchAPI'
 import style from '../styles/module/page.module.css'
 import { NavBar } from '@/components/NavBar'
 import { AsideBar } from '@/components/AsideBar'
@@ -11,7 +11,6 @@ export default function CreateUserView() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
-  const cookies = parseCookies()
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [uploadLoading, setUploadLoading] = useState(false)
 
@@ -34,10 +33,8 @@ export default function CreateUserView() {
       setLoading(true)
       const response = await fetch(urlCreateUser, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${cookies.copyei_user}`,
-        },
+        headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+        credentials: 'include',
         body: JSON.stringify({ name, email }),
       })
 
@@ -72,9 +69,8 @@ export default function CreateUserView() {
       setUploadLoading(true)
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/upload-sheet/create-many-users`, {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${cookies.copyei_user}`,
-        },
+        headers: getAuthHeaders(),
+        credentials: 'include',
         body: formData,
       })
 

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { FormEvent, useState } from 'react'
-import { parseCookies } from 'nookies'
 import { toast } from 'react-toastify'
 
 import { fetchAPI } from '@/utils/fetchAPI'
@@ -12,7 +11,6 @@ import style from '../styles/module/page.module.css'
 export default function DomainView() {
   const [domain, setDomain] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const cookies = parseCookies()
 
   /* Função para lidar com o envio do formulário de criação de domínio */
   const handleSubmit = async (event: FormEvent) => {
@@ -30,10 +28,7 @@ export default function DomainView() {
       /* Fazer requisição para backend */
       const createDomainResponse = await fetchAPI<{ message?: string }>('/domain', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${cookies.copyei_user}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ domain }),
       })
       const { data } = createDomainResponse

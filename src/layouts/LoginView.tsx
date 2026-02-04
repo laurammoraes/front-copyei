@@ -56,6 +56,7 @@ export function LoginView() {
       })
       const data = (await res.json()) as {
         message?: string
+        token?: string
         reason?: string
         hint?: string
         detail?: string
@@ -76,7 +77,11 @@ export function LoginView() {
         throw new Error(errMsg)
       }
 
-      /* Mensagem de sucesso e redirecionamento para /admin */
+      /* Salvar token no localStorage ANTES do redirect - necessário para requisições à API */
+      if (data?.token) {
+        localStorage.setItem('copyei_token', data.token)
+      }
+
       toast.info('Login realizado com sucesso!')
       router.push('/admin')
     } catch (error) {

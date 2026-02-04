@@ -4,7 +4,6 @@ import React, { FormEvent, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { toast } from 'react-toastify'
-import { parseCookies } from 'nookies'
 import Select, { SingleValue } from 'react-select'
 
 import { fetchAPI } from '@/utils/fetchAPI'
@@ -39,7 +38,6 @@ export default function ClonedView() {
   const [titleSite, setTitleSite] = useState('')
   const [domains, setDomains] = useState<FilteredDomains[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const cookies = parseCookies()
   const router = useRouter()
 
   /* Função para lidar com o envio do formulário de clonagem de site */
@@ -75,10 +73,7 @@ export default function ClonedView() {
       /* Faz uma solicitação POST para o backend */
       const cloneResponse = await fetchAPI<{ message?: string }>('/clone', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${cookies.copyei_user}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: urlSiteToClone, domainId: domainSelect, title: titleSite }),
       })
       const { data } = cloneResponse
@@ -138,10 +133,7 @@ export default function ClonedView() {
         /* Fazer requisição ao backend */
         const domainsResponse = await fetchAPI<{ domains?: Domains[] }>('/searchSites', {
           method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${cookies.copyei_user}`,
-          },
+          headers: { 'Content-Type': 'application/json' },
         })
         const { data } = domainsResponse
 
@@ -161,7 +153,7 @@ export default function ClonedView() {
     }
 
     searchDomains()
-  }, [cookies.copyei_user])
+  }, [])
 
   /* Custom styles for react-select */
   const customStyles = {

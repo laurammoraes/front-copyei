@@ -4,8 +4,6 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { toast } from 'react-toastify'
 import { CopySimple } from '@phosphor-icons/react'
-import { parseCookies } from 'nookies'
-
 import { fetchAPI } from '@/utils/fetchAPI'
 import { AsideBar } from '@/components/AsideBar'
 import { NavBar } from '@/components/NavBar'
@@ -27,7 +25,6 @@ interface Site {
 export default function DriveWebsitesListView() {
   const [sites, setSites] = useState<Site[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const cookies = parseCookies()
 
   const handleButtonClickDelete = async (siteId: number) => {
     try {
@@ -37,10 +34,7 @@ export default function DriveWebsitesListView() {
       /* Fazer requisição ao backend */
       const response = await fetchAPI(`/aapanel/websites/${siteId}`, {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${cookies.copyei_user}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
       })
 
       /* Captar exceções */
@@ -64,10 +58,7 @@ export default function DriveWebsitesListView() {
         /* Fazer requisição para backend */
         const sitesResponse = await fetchAPI<{ sites?: Site[] }>('/searchSites?type=DRIVE', {
           method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${cookies.copyei_user}`,
-          },
+          headers: { 'Content-Type': 'application/json' },
           cache: 'no-cache',
         })
         const { data } = sitesResponse
@@ -83,7 +74,7 @@ export default function DriveWebsitesListView() {
     }
 
     searchSites()
-  }, [cookies.copyei_user])
+  }, [])
 
   return (
     <>
