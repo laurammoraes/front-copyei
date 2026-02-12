@@ -25,6 +25,7 @@ export function UserProvider({ children, userData }: ProviderProps): JSX.Element
         method: 'GET',
         credentials: 'include',
       })
+      if (typeof window !== 'undefined') localStorage.removeItem('copyei_token')
       toast.info('Logout realizado com sucesso')
       setUser(null)
       router.push('/login')

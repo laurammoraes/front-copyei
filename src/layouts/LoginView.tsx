@@ -77,6 +77,14 @@ export function LoginView() {
         throw new Error(errMsg)
       }
 
+      if (data?.token) {
+        localStorage.setItem('copyei_token', data.token)
+      } else {
+        const tokenRes = await fetch('/api/auth/token', { credentials: 'include' })
+        const tokenData = (await tokenRes.json()) as { token?: string }
+        if (tokenData?.token) localStorage.setItem('copyei_token', tokenData.token)
+      }
+
       toast.info('Login realizado com sucesso!')
       router.push('/admin')
     } catch (error) {

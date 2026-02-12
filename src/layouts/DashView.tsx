@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { toast } from 'react-toastify'
+
+import { getProxyHeaders } from '@/utils/fetchAPI'
 import style from '../styles/module/page.module.css'
 import { useRouter } from 'next/navigation'
 import { NavBar } from '@/components/NavBar'
@@ -65,6 +67,7 @@ export default function DashView() {
       const response = await fetch(`/api/proxy/users/list?${searchParams}`, {
         credentials: 'include',
         cache: 'no-cache',
+        headers: getProxyHeaders(),
       })
 
       if (!response.ok) {
@@ -94,6 +97,7 @@ export default function DashView() {
     try {
       const response = await fetch('/api/proxy/users/download-sheet/all', {
         credentials: 'include',
+        headers: getProxyHeaders(),
       })
 
       if (!response.ok) {

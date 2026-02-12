@@ -2,6 +2,8 @@
 
 import React, { FormEvent, useState } from 'react'
 import { toast } from 'react-toastify'
+
+import { getProxyHeaders } from '@/utils/fetchAPI'
 import style from '../styles/module/page.module.css'
 import { NavBar } from '@/components/NavBar'
 import { AsideBar } from '@/components/AsideBar'
@@ -30,7 +32,7 @@ export default function CreateUserView() {
       setLoading(true)
       const response = await fetch('/api/proxy/users/create', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...getProxyHeaders() },
         credentials: 'include',
         body: JSON.stringify({ name, email }),
       })
@@ -66,6 +68,7 @@ export default function CreateUserView() {
       setUploadLoading(true)
       const response = await fetch('/api/proxy/users/upload-sheet/create-many-users', {
         method: 'POST',
+        headers: getProxyHeaders(),
         credentials: 'include',
         body: formData,
       })

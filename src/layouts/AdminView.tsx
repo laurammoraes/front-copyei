@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { toast } from 'react-toastify'
-import { fetchAPI } from '@/utils/fetchAPI'
+import { fetchAPI, getProxyHeaders } from '@/utils/fetchAPI'
 import { AsideBar } from '@/components/AsideBar'
 import { NavBar } from '@/components/NavBar'
 import style from '../styles/module/page.module.css'
@@ -62,7 +62,10 @@ export default function AdminView() {
 
       /* Fazer requisição ao backend */
       const siteUrl = process.env.NEXT_PUBLIC_NODE_ENV === 'development' ? title : domain
-      const response = await fetch(`/api/proxy/site/${siteUrl}`, { credentials: 'include' })
+      const response = await fetch(`/api/proxy/site/${siteUrl}`, {
+        credentials: 'include',
+        headers: getProxyHeaders(),
+      })
 
       /* Captar exceções */
       if (!response.ok) {
@@ -92,7 +95,10 @@ export default function AdminView() {
 
       /* Fazer requisição ao backend */
       const siteUrl = process.env.NEXT_PUBLIC_NODE_ENV === 'development' ? title : domain
-      const response = await fetch(`/api/proxy/download/${siteUrl}`, { credentials: 'include' })
+      const response = await fetch(`/api/proxy/download/${siteUrl}`, {
+        credentials: 'include',
+        headers: getProxyHeaders(),
+      })
 
       /* Captar exceções */
       if (!response.ok) throw new Error('Ocorreu um erro ao fazer download do site. Tente novamente mais tarde...')
@@ -131,7 +137,10 @@ export default function AdminView() {
 
       /* Fazer requisição ao backend */
       const siteUrl = process.env.NEXT_PUBLIC_NODE_ENV === 'development' ? title : domain
-      const response = await fetch(`/api/proxy/editor/${siteUrl}`, { credentials: 'include' })
+      const response = await fetch(`/api/proxy/editor/${siteUrl}`, {
+        credentials: 'include',
+        headers: getProxyHeaders(),
+      })
 
       if (!response.ok) throw new Error('Ocorreu um erro ao abrir o editor. Tente novamente mais tarde...')
 
@@ -157,7 +166,10 @@ export default function AdminView() {
 
       /* Fazer requisição ao backend */
       const siteUrl = process.env.NEXT_PUBLIC_NODE_ENV === 'development' ? title : domain
-      const response = await fetch(`/api/proxy/download/${siteUrl}/html`, { credentials: 'include' })
+      const response = await fetch(`/api/proxy/download/${siteUrl}/html`, {
+        credentials: 'include',
+        headers: getProxyHeaders(),
+      })
 
       /* Captar exceções */
       if (!response.ok) throw new Error('Ocorreu um erro ao baixar HTML. Tente novamente mais tarde...')

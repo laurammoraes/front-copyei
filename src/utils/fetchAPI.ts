@@ -13,16 +13,25 @@ export function getAuthHeaders(): Record<string, string> {
   return { Authorization: `Bearer ${token}` }
 }
 
+export function getProxyHeaders(): Record<string, string> {
+  const token = getAuthToken()
+  if (!token) return {}
+  return { 'X-Auth-Token': token }
+}
+
 const toProxyPath = (url: RequestInfo | URL) =>
   (typeof url === 'string' ? url : String(url)).replace(/^\//, '')
 
 export async function fetchAPI<T = unknown>(url: RequestInfo | URL, init?: RequestInit) {
   try {
     const path = toProxyPath(url)
+    const headers = new Headers(init?.headers)
+    const token = getAuthToken()
+    if (token) headers.set('X-Auth-Token', token)
     const response = await fetch(`/api/proxy/${path}`, {
       ...init,
       credentials: 'include',
-      headers: init?.headers ?? {},
+      headers,
     })
 
     const data = (await response.json()) as T

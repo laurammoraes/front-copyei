@@ -13,11 +13,14 @@ async function proxyRequest(request: NextRequest, pathSegments: string[]) {
   const url = `${API_BASE_URL.replace(/\/$/, '')}/${path}${searchParams ? `?${searchParams}` : ''}`
 
   const cookieStore = await cookies()
-  const token = cookieStore.get('copyei_user')?.value
+  const token =
+    cookieStore.get('copyei_user')?.value ??
+    request.headers.get('x-auth-token')?.trim()
 
   const headers = new Headers(request.headers)
   headers.delete('host')
   headers.delete('connection')
+  headers.delete('x-auth-token')
   if (token) {
     headers.set('Authorization', `Bearer ${token}`)
   } else if (headers.has('Authorization')) {
@@ -54,16 +57,18 @@ async function proxyRequest(request: NextRequest, pathSegments: string[]) {
     }
   })
 
+  const status = response.status === 304 ? 200 : response.status
+
   if (contentType.includes('application/json')) {
     const data = await response.json()
-    return NextResponse.json(data, { status: response.status, headers: resHeaders })
+    return NextResponse.json(data, { status, headers: resHeaders })
   }
   if (contentType.includes('application/') || contentType.includes('text/')) {
     const text = await response.text()
-    return new NextResponse(text, { status: response.status, headers: resHeaders })
+    return new NextResponse(text, { status, headers: resHeaders })
   }
   const blob = await response.blob()
-  return new NextResponse(blob, { status: response.status, headers: resHeaders })
+  return new NextResponse(blob, { status, headers: resHeaders })
 }
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {

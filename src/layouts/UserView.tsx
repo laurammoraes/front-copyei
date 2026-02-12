@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useParams } from 'next/navigation'
 
-
+import { getProxyHeaders } from '@/utils/fetchAPI'
 import style from '../styles/module/page.module.css'
 import { AsideBar } from '@/components/AsideBar'
 import { NavBar } from '@/components/NavBar'
@@ -166,7 +166,11 @@ export function UserView() {
   const fetchUser = async () => {
     try {
       setLoading(true)
-      const opts = { credentials: 'include' as const, cache: 'no-cache' as RequestCache }
+      const opts = {
+        credentials: 'include' as const,
+        cache: 'no-cache' as RequestCache,
+        headers: getProxyHeaders(),
+      }
       const [userResponse, logsResponse] = await Promise.all([
         fetch(`/api/proxy/users/user/list/${params.id}`, opts),
         fetch(`/api/proxy/users/logs/${params.id}`, opts),
@@ -220,7 +224,7 @@ export function UserView() {
       const path = user?.usageDuration.isPaused ? 'users/user/active' : 'users/user/pause'
       const response = await fetch(`/api/proxy/${path}/${params.id}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...getProxyHeaders() },
         credentials: 'include',
       })
 
@@ -251,7 +255,7 @@ export function UserView() {
       setLoading(true)
       const response = await fetch(`/api/proxy/users/user/delete/${params.id}`, {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...getProxyHeaders() },
         credentials: 'include',
       })
 
