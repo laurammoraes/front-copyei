@@ -189,7 +189,7 @@ export default function ClonedView() {
         <AsideBar />
         <div className={style.containerAll}>
           <div className={style.content}>
-            <form onSubmit={handleSubmit} className={style.form} method="post">
+            <form onSubmit={handleSubmit} className={style.form}>
               <div className={style.divClone}>
                 <h1 className={style.title}>CLONE SEU SITE</h1>
 

@@ -95,7 +95,7 @@ export default function CreateUserView() {
         <AsideBar />
         <div className={style.containerAll}>
           <div className={style.content}>
-            <form onSubmit={handleSubmit} className={style.form} method="post" style={{ marginBottom: '1rem' }}>
+            <form onSubmit={handleSubmit} className={style.form} style={{ marginBottom: '1rem' }}>
               <div className={style.divClone}>
                 <h1 className={style.title}>CADASTRAR USUÁRIO</h1>
 
