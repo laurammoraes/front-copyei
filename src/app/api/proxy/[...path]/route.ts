@@ -49,8 +49,9 @@ async function proxyRequest(request: NextRequest, pathSegments: string[]) {
     const location = response.headers.get('location')
     if (location) {
       try {
-        const redirectUrl = new URL(location, request.url)
-        return NextResponse.redirect(redirectUrl)
+        const base = request.nextUrl.origin
+        const absoluteUrl = new URL(location, `${base}/`).href
+        return NextResponse.redirect(absoluteUrl)
       } catch {
         /* Location relativa inválida; não redireciona para evitar TypeError: Invalid URL */
       }
