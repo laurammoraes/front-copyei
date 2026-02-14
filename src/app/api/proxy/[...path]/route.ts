@@ -47,7 +47,14 @@ async function proxyRequest(request: NextRequest, pathSegments: string[]) {
   const response = await fetch(url, init)
   if (response.status >= 300 && response.status < 400) {
     const location = response.headers.get('location')
-    if (location) return NextResponse.redirect(location)
+    if (location) {
+      try {
+        const redirectUrl = new URL(location, request.url)
+        return NextResponse.redirect(redirectUrl)
+      } catch {
+        /* Location relativa inválida; não redireciona para evitar TypeError: Invalid URL */
+      }
+    }
   }
   const contentType = response.headers.get('content-type') ?? ''
   const resHeaders = new Headers()
