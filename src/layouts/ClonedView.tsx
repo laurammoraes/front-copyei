@@ -95,13 +95,6 @@ export default function ClonedView() {
         toast.info('Já existe um site com esse nome. Dê um nome diferente')
         return
       }
-      if (
-        data?.message &&
-        data?.message === 'Você chegou no limite de clones dos sites. Para continuar, exclua um de seus sites clonados.'
-      ) {
-        toast.info('Você chegou no limite de clones dos sites. Para continuar, exclua um de seus sites clonados.')
-        return
-      }
 
       /* Verifica se a resposta não foi bem-sucedida e notifica o usuário */
       if (!cloneResponse.ok) throw new Error('Ocorreu um erro ao clonar o site. Tente novamente mais tarde...')

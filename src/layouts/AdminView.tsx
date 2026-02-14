@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { toast } from 'react-toastify'
 import { fetchAPI, getProxyHeaders } from '@/utils/fetchAPI'
@@ -27,7 +26,6 @@ export default function AdminView() {
   const [sites, setSites] = useState<Site[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [blockingModalId, setBlockingModalId] = useState<string | null>(null)
-  const router = useRouter()
 
   const handleButtonClickDelete = async (siteId: number) => {
     try {
@@ -195,38 +193,6 @@ export default function AdminView() {
     }
   }
 
-  const handleUploadToDrive = async (domain: string) => {
-    try {
-      /* Inicia estado de carregamento */
-      setIsLoading(true)
-
-      /* Fazer requisição ao backend */
-      const response = await fetchAPI<any>(`/websites/${domain}/upload-to-drive`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-      })
-
-      /* Redirecionar usuário a tela de login social com o Google, caso o usuário não esteja com o token do Google */
-      if (response.data?.message && response.data?.message === 'O usuário precisa logar com o Google') {
-        const googleAuthEndpoint = '/api/proxy/google/auth'
-        router.push(googleAuthEndpoint)
-        return
-      }
-
-      /* Captar exceções */
-      if (!response.ok) throw new Error('Erro ao deletar URL')
-
-      toast.success('Site transferido para o Google Drive com sucesso!')
-      setBlockingModalId(domain)
-    } catch (error) {
-      console.error(error)
-      toast.error('Ocorreu um erro ao transferir o site para o Google Drive. Tente novamente mais tarde...')
-    } finally {
-      /* Finaliza estado de carregamento */
-      setIsLoading(false)
-    }
-  }
-
   useEffect(() => {
     const searchSites = async () => {
       try {
@@ -341,36 +307,6 @@ export default function AdminView() {
                                 <Image src={'/icons/bin.gif'} width={30} height={30} alt="edit" />
                               )}
                             </button>
-
-                            {/* Optional: Block here for only admins send to Google Drive */}
-                            {site.type === 'LOCAL' && (
-                              <button
-                                className={style.btnDrive}
-                                type="button"
-                                onClick={() => handleUploadToDrive(site.title)}
-                                disabled={isLoading}
-                              >
-                                {isLoading ? (
-                                  <div className={style.loader}></div>
-                                ) : (
-                                  <div className="size-[30px]">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      width="30"
-                                      height="30"
-                                      viewBox="0 0 1443.061 1249.993"
-                                    >
-                                      <path
-                                        fill="#3777e3"
-                                        d="M240.525 1249.993l240.492-416.664h962.044l-240.514 416.664z"
-                                      />
-                                      <path fill="#ffcf63" d="M962.055 833.329h481.006L962.055 0H481.017z" />
-                                      <path fill="#11a861" d="M0 833.329l240.525 416.664 481.006-833.328L481.017 0z" />
-                                    </svg>
-                                  </div>
-                                )}
-                              </button>
-                            )}
                           </td>
                         </tr>
                       ))}
