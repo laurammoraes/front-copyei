@@ -60,8 +60,8 @@ export default function AdminView() {
       /* Inicia estado de carregamento */
       setIsLoading(true)
 
-      /* Fazer requisição ao backend */
-      const siteUrl = process.env.NEXT_PUBLIC_NODE_ENV === 'development' ? title : domain
+      /* Fazer requisição ao backend (backend encontra o site pelo title) */
+      const siteUrl = title
       const response = await fetch(`/api/proxy/site/${siteUrl}`, {
         credentials: 'include',
         headers: getProxyHeaders(),
@@ -93,8 +93,8 @@ export default function AdminView() {
       /* Inicia estado de carregamento */
       setIsLoading(true)
 
-      /* Fazer requisição ao backend */
-      const siteUrl = process.env.NEXT_PUBLIC_NODE_ENV === 'development' ? title : domain
+      /* Fazer requisição ao backend (backend encontra o site pelo title) */
+      const siteUrl = title
       const response = await fetch(`/api/proxy/download/${siteUrl}`, {
         credentials: 'include',
         headers: getProxyHeaders(),
@@ -135,8 +135,8 @@ export default function AdminView() {
       /* Inicia estado de carregamento */
       setIsLoading(true)
 
-      /* Fazer requisição ao backend */
-      const siteUrl = process.env.NEXT_PUBLIC_NODE_ENV === 'development' ? title : domain
+      /* Fazer requisição ao backend (backend encontra o site pelo title) */
+      const siteUrl = title
       const response = await fetch(`/api/proxy/editor/${siteUrl}`, {
         credentials: 'include',
         headers: getProxyHeaders(),
@@ -164,8 +164,8 @@ export default function AdminView() {
       /* Inicia estado de carregamento */
       setIsLoading(true)
 
-      /* Fazer requisição ao backend */
-      const siteUrl = process.env.NEXT_PUBLIC_NODE_ENV === 'development' ? title : domain
+      /* Fazer requisição ao backend (backend encontra o site pelo title) */
+      const siteUrl = title
       const response = await fetch(`/api/proxy/download/${siteUrl}/html`, {
         credentials: 'include',
         headers: getProxyHeaders(),
