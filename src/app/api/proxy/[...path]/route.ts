@@ -50,7 +50,10 @@ async function proxyRequest(request: NextRequest, pathSegments: string[]) {
     if (location) {
       try {
         const apiBase = API_BASE_URL.replace(/\/$/, '')
-        const path = location.startsWith('/') ? location : `/${location}`
+        let path = location.startsWith('/') ? location : `/${location}`
+        if (apiBase.endsWith('/api') && path.startsWith('/api/')) {
+          path = path.slice(4)
+        }
         const absoluteUrl = `${apiBase}${path}`
         new URL(absoluteUrl)
         return NextResponse.redirect(absoluteUrl)
