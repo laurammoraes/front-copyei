@@ -44,8 +44,19 @@ async function proxyRequest(request: NextRequest, pathSegments: string[]) {
     }
   }
 
-  const response = await fetch(url, init)
-  if (response.status >= 300 && response.status < 400) {
+  let response = await fetch(url, init)
+
+  /* Para o path editor: seguir redirects no servidor (evita 401 no browser ao redirecionar para a API) */
+  if (pathSegments[0] === 'editor' && response.status >= 300 && response.status < 400) {
+    let nextUrl: string | null = response.headers.get('location')
+    const followInit: RequestInit = { method: 'GET', headers, redirect: 'manual' }
+    while (nextUrl) {
+      const resolvedUrl = nextUrl.startsWith('http') ? nextUrl : new URL(nextUrl, url).toString()
+      response = await fetch(resolvedUrl, followInit)
+      nextUrl =
+        response.status >= 300 && response.status < 400 ? response.headers.get('location') : null
+    }
+  } else if (response.status >= 300 && response.status < 400) {
     const location = response.headers.get('location')
     if (location) {
       try {
@@ -62,6 +73,7 @@ async function proxyRequest(request: NextRequest, pathSegments: string[]) {
       }
     }
   }
+
   const contentType = response.headers.get('content-type') ?? ''
   const resHeaders = new Headers()
   response.headers.forEach((v, k) => {
