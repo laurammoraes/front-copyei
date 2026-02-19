@@ -34,17 +34,54 @@ export async function fetchAPI<T = unknown>(url: RequestInfo | URL, init?: Reque
       headers,
     })
 
-    const data = (await response.json()) as T
+    const contentType = response.headers.get('content-type') ?? ''
+    const isJson = contentType.includes('application/json')
+    const text = await response.text()
 
-    return {
-      data,
-      status: response.status,
-      ok: response.ok,
-      headers: response.headers,
+    if (!text.trim()) {
+      return {
+        data: null as T,
+        status: response.status,
+        ok: response.ok,
+        headers: response.headers,
+      }
+    }
+
+    if (!isJson) {
+      console.warn('[fetchAPI] Resposta não é JSON', { path, contentType, status: response.status })
+      return {
+        data: null as T,
+        status: response.status,
+        ok: false,
+        headers: response.headers,
+      }
+    }
+
+    try {
+      const data = JSON.parse(text) as T
+      return {
+        data,
+        status: response.status,
+        ok: response.ok,
+        headers: response.headers,
+      }
+    } catch (parseError) {
+      console.warn('[fetchAPI] JSON inválido', { path, status: response.status }, parseError)
+      return {
+        data: null as T,
+        status: response.status,
+        ok: false,
+        headers: response.headers,
+      }
     }
   } catch (error) {
     console.error(error)
-
-    return { data: null, status: 500, ok: false, headers: {}, error }
+    return {
+      data: null as T,
+      status: 500,
+      ok: false,
+      headers: new Headers(),
+      error,
+    }
   }
 }

@@ -85,7 +85,17 @@ async function proxyRequest(request: NextRequest, pathSegments: string[]) {
   const status = response.status === 304 ? 200 : response.status
 
   if (contentType.includes('application/json')) {
-    const data = await response.json()
+    const text = await response.text()
+    let data: unknown
+    if (!text.trim()) {
+      data = {}
+    } else {
+      try {
+        data = JSON.parse(text)
+      } catch {
+        data = {}
+      }
+    }
     return NextResponse.json(data, { status, headers: resHeaders })
   }
   if (contentType.includes('application/') || contentType.includes('text/')) {
