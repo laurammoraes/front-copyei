@@ -21,7 +21,7 @@ export function AsideBar() {
           <div className={style.divMyPagesSideBar}>
             <span className={style.titleLinks}>PÁGINAS NA COPYEI</span>
             <a href="/admin" className={style.Link}>
-              <Image src={'/icons/items.gif'} width={30} height={30} alt="items"></Image>Minhas páginas
+              <Image src={'/icons/items.gif'} width={30} height={30} alt="items" unoptimized></Image>Minhas páginas
             </a>
           </div>
 
@@ -29,14 +29,14 @@ export function AsideBar() {
           <div className={style.divMyPagesSideBar}>
             <span className={style.titleLinks}>PÁGINAS NO GOOGLE DRIVE</span>
             <a href="/admin/drive-websites" className={style.Link}>
-              <Image src={'/icons/items.gif'} width={30} height={30} alt="items"></Image>Meu Drive
+              <Image src={'/icons/items.gif'} width={30} height={30} alt="items" unoptimized></Image>Meu Drive
             </a>
           </div>
 
           <div className={style.divMyPagesSideBar}>
             <span className={style.titleLinks}>CLONAR</span>
             <a href="/admin/clonar" className={style.Link}>
-              <Image src="/icons/fork.gif" width={30} height={30} alt="items"></Image>Clonar Uma Página
+              <Image src="/icons/fork.gif" width={30} height={30} alt="items" unoptimized></Image>Clonar Uma Página
             </a>
           </div>
 
@@ -44,7 +44,7 @@ export function AsideBar() {
             <div className={style.divMyPagesSideBar}>
               <span className={style.titleLinks}>DOMÍNIOS</span>
               <a href="/admin/dominios" className={style.Link}>
-                <Image src={'/icons/domains.gif'} width={30} height={30} alt="items"></Image>Meus Domínios
+                <Image src={'/icons/domains.gif'} width={30} height={30} alt="items" unoptimized></Image>Meus Domínios
               </a>
             </div>
           )}
@@ -53,7 +53,7 @@ export function AsideBar() {
             <div className={style.divMyPagesSideBar}>
               <span className={style.titleLinks}>DASHBOARD</span>
               <Link href={'/dashboard'} className={style.Link}>
-                <Image src={'/icons/items.gif'} width={30} height={30} alt="dash"></Image>Dashboard de usuários
+                <Image src={'/icons/items.gif'} width={30} height={30} alt="dash" unoptimized></Image>Dashboard de usuários
               </Link>
             </div>
           )}
@@ -62,7 +62,7 @@ export function AsideBar() {
             <div className={style.divMyPagesSideBar}>
               <span className={style.titleLinks}>ADICIONAR USUÁRIOS</span>
               <Link href={'/users/create'} className={style.Link}>
-                <Image src={'/icons/person.gif'} width={30} height={30} alt="dash"></Image>Adicionar usuários
+                <Image src={'/icons/person.gif'} width={30} height={30} alt="dash" unoptimized></Image>Adicionar usuários
               </Link>
             </div>
           )}
@@ -71,7 +71,7 @@ export function AsideBar() {
             <div className={style.divMyPagesSideBar}>
               <span className={style.titleLinks}>GERADOR DE WEBHOOK</span>
               <Link href={'/webhook'} className={style.Link}>
-                <Image src="/icons/fork.gif" width={30} height={30} alt="dash"></Image>Gerar Webhook
+                <Image src="/icons/fork.gif" width={30} height={30} alt="dash" unoptimized></Image>Gerar Webhook
               </Link>
             </div>
           )}

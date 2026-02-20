@@ -116,7 +116,7 @@ export default function ListDomainView() {
                               {isLoading ? (
                                 <div className={style.loader}></div>
                               ) : (
-                                <Image src={'/icons/bin.gif'} width={30} height={30} alt="delete" />
+                                <Image src={'/icons/bin.gif'} width={30} height={30} alt="delete" unoptimized />
                               )}
                             </button>
                           </td>

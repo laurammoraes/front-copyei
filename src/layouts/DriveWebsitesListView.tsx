@@ -126,7 +126,7 @@ export default function DriveWebsitesListView() {
                               title="Visualizar site"
                               style={{ display: 'inline-flex' }}
                             >
-                              <Image src={'/icons/eye.gif'} width={30} height={30} alt="edit" />
+                              <Image src={'/icons/eye.gif'} width={30} height={30} alt="edit" unoptimized />
                             </a>
 
                             <button
@@ -138,7 +138,7 @@ export default function DriveWebsitesListView() {
                               {isLoading ? (
                                 <div className={style.loader}></div>
                               ) : (
-                                <Image src={'/icons/bin.gif'} width={30} height={30} alt="edit" />
+                                <Image src={'/icons/bin.gif'} width={30} height={30} alt="edit" unoptimized />
                               )}
                             </button>
                           </td>

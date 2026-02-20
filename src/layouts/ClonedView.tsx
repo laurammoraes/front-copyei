@@ -233,7 +233,7 @@ export default function ClonedView() {
                     <div className={style.loader}></div>
                   ) : (
                     <>
-                      <Image src={'/icons/fork.gif'} alt="Fork" width={30} height={30} /> CLONAR
+                      <Image src={'/icons/fork.gif'} alt="Fork" width={30} height={30} unoptimized /> CLONAR
                     </>
                   )}
                 </button>

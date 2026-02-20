@@ -252,7 +252,7 @@ export default function AdminView() {
                               {isLoading ? (
                                 <div className={style.loader}></div>
                               ) : (
-                                <Image src={'/icons/edit.gif'} width={30} height={30} alt="edit" />
+                                <Image src={'/icons/edit.gif'} width={30} height={30} alt="edit" unoptimized />
                               )}
                             </button>
 
@@ -265,7 +265,7 @@ export default function AdminView() {
                               {isLoading ? (
                                 <div className={style.loader}></div>
                               ) : (
-                                <Image src={'/icons/eye.gif'} width={30} height={30} alt="edit" />
+                                <Image src={'/icons/eye.gif'} width={30} height={30} alt="edit" unoptimized />
                               )}
                             </button>
 
@@ -304,7 +304,7 @@ export default function AdminView() {
                               {isLoading ? (
                                 <div className={style.loader}></div>
                               ) : (
-                                <Image src={'/icons/bin.gif'} width={30} height={30} alt="edit" />
+                                <Image src={'/icons/bin.gif'} width={30} height={30} alt="edit" unoptimized />
                               )}
                             </button>
                           </td>

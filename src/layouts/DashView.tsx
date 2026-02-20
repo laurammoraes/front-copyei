@@ -204,7 +204,7 @@ export default function DashView() {
                                 {loadingUserId === user.id ? (
                                   <div className={style.loader}></div>
                                 ) : (
-                                  <Image src={'/icons/eye.gif'} width={30} height={30} alt="view" />
+                                  <Image src={'/icons/eye.gif'} width={30} height={30} alt="view" unoptimized />
                                 )}
                               </button>
                             </td>
