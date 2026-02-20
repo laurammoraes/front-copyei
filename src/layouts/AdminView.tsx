@@ -136,7 +136,7 @@ export default function AdminView() {
       /* Inicia estado de carregamento */
       setIsLoading(true)
 
-      /* Fazer requisição ao backend (backend encontra o site pelo title) */
+      /* Verifica se o editor está disponível (via proxy) */
       const siteUrl = title
       const response = await fetch(`/api/proxy/editor/${siteUrl}`, {
         credentials: 'include',
@@ -145,7 +145,10 @@ export default function AdminView() {
 
       if (!response.ok) throw new Error('Ocorreu um erro ao abrir o editor. Tente novamente mais tarde...')
 
-      window.open(`/api/proxy/editor/${siteUrl}`, '_blank')
+      /* Abre o editor diretamente na URL da API para que scripts/assets relativos (index.js, etc.) carreguem corretamente */
+      const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? ''
+      const editorUrl = `${baseUrl.replace(/\/$/, '')}/editor/${siteUrl}/`
+      window.open(editorUrl, '_blank')
     } catch (error) {
       console.error(error)
       toast.error('Ocorreu um erro ao abrir o editor. Tente novamente mais tarde...')
