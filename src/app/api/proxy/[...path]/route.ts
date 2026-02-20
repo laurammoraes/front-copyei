@@ -3,6 +3,21 @@ import { cookies } from 'next/headers'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? process.env.API_BASE_URL
 
+/** Origem pública do app (em produção atrás de proxy, request.url pode ser localhost) */
+function getPublicOrigin(request: NextRequest): string {
+  const proto = request.headers.get('x-forwarded-proto') ?? request.headers.get('x-forwarded-protocol')
+  const host = request.headers.get('x-forwarded-host') ?? request.headers.get('host')
+  if (host) {
+    const scheme = proto === 'https' || proto === 'http' ? proto : 'https'
+    return `${scheme}://${host}`
+  }
+  try {
+    return new URL(request.url).origin
+  } catch {
+    return ''
+  }
+}
+
 /** Extrai o nome do site do editor a partir do Referer (ex: .../api/proxy/editor/testelaura3 -> testelaura3) */
 function getEditorSiteNameFromReferer(referer: string | null): string | null {
   if (!referer) return null
@@ -163,8 +178,14 @@ async function proxyRequest(request: NextRequest, pathSegments: string[]) {
       !looksLikeEditorAsset(segments[1])
     if (isEditorPage && contentType.includes('text/html')) {
       const apiBase = API_BASE_URL.replace(/\/$/, '')
-      const proxyBase = `${new URL(request.url).origin}/api/proxy`
+      const origin = getPublicOrigin(request)
+      const proxyBase = origin ? `${origin}/api/proxy` : '/api/proxy'
       text = text.replaceAll(apiBase, proxyBase)
+      /* Em produção atrás de proxy, backend pode injetar localhost; reescrever para o proxy público */
+      if (origin) {
+        text = text.replaceAll('http://localhost:3000/api/proxy', proxyBase)
+        text = text.replaceAll('http://127.0.0.1:3000/api/proxy', proxyBase)
+      }
     }
     return new NextResponse(text, { status, headers: resHeaders })
   }
