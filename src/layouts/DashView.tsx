@@ -64,21 +64,45 @@ export default function DashView() {
         status: filters.status,
       }).toString()
 
-      const response = await fetch(`/api/proxy/users/list?${searchParams}`, {
-        credentials: 'include',
-        cache: 'no-cache',
-        headers: getProxyHeaders(),
-      })
+      const doFetch = async (): Promise<{ response: Response; text: string }> => {
+        const res = await fetch(`/api/proxy/users/list?${searchParams}`, {
+          credentials: 'include',
+          cache: 'no-store',
+          headers: getProxyHeaders(),
+        })
+        const text = await res.text()
+        return { response: res, text }
+      }
+
+      let { response, text } = await doFetch()
+      if (response.ok && !text.trim()) {
+        await new Promise((r) => setTimeout(r, 400))
+        const next = await doFetch()
+        if (next.text.trim()) {
+          response = next.response
+          text = next.text
+        }
+      }
 
       if (!response.ok) {
         toast.error('Erro ao buscar usuários. Tente novamente mais tarde.')
         return
       }
 
-      const data: PaginatedUsers = await response.json()
-
-      setUsers(data.data)
-      setTotalPages(data.pagination.lastPage)
+      if (!text.trim()) {
+        setUsers([])
+        setTotalPages(0)
+        return
+      }
+      try {
+        const data: PaginatedUsers = JSON.parse(text)
+        setUsers(data.data ?? [])
+        setTotalPages(data.pagination?.lastPage ?? 0)
+      } catch {
+        toast.error('Resposta inválida ao buscar usuários.')
+        setUsers([])
+        setTotalPages(0)
+      }
     } catch (error) {
       console.error('Erro ao buscar usuários', error)
       toast.error('Ocorreu um erro inesperado. Tente novamente mais tarde...')

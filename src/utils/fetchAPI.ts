@@ -22,21 +22,48 @@ export function getProxyHeaders(): Record<string, string> {
 const toProxyPath = (url: RequestInfo | URL) =>
   (typeof url === 'string' ? url : String(url)).replace(/^\//, '')
 
+async function fetchOnce<T>(
+  path: string,
+  init: RequestInit,
+  headers: Headers
+): Promise<{ response: Response; text: string }> {
+  const response = await fetch(`/api/proxy/${path}`, {
+    ...init,
+    credentials: 'include',
+    headers,
+    cache: (init.method ?? 'GET') === 'GET' ? 'no-store' : init.cache,
+  })
+  const text = await response.text()
+  return { response, text }
+}
+
 export async function fetchAPI<T = unknown>(url: RequestInfo | URL, init?: RequestInit) {
+  console.log('>>> [fetchAPI] INICIOU CHAMADA PARA:', url)
   try {
     const path = toProxyPath(url)
     const headers = new Headers(init?.headers)
     const token = getAuthToken()
     if (token) headers.set('X-Auth-Token', token)
-    const response = await fetch(`/api/proxy/${path}`, {
-      ...init,
-      credentials: 'include',
-      headers,
-    })
 
+<<<<<<< HEAD
     const contentType = response.headers.get('content-type') ?? ''
     const isJson = contentType.includes('application/json')
     const text = await response.text()
+=======
+    let { response, text } = await fetchOnce(path, init ?? {}, headers)
+    console.log(`[DEBUG] Path: ${path} | Status: ${response.status} | Body Length: ${text.length}`)
+
+    /* Retry uma vez em GET quando a resposta for 200 mas corpo vazio (comportamento instável do backend) */
+    const method = (init?.method ?? 'GET').toUpperCase()
+    if (method === 'GET' && response.ok && !text.trim()) {
+      await new Promise((r) => setTimeout(r, 400))
+      const next = await fetchOnce(path, init ?? {}, headers)
+      if (next.text.trim()) {
+        response = next.response
+        text = next.text
+      }
+    }
+>>>>>>> d9d0d2f (requisição funcionando)
 
     if (!text.trim()) {
       return {

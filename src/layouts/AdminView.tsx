@@ -196,11 +196,16 @@ export default function AdminView() {
   useEffect(() => {
     const searchSites = async () => {
       try {
-        const sitesResponse = await fetchAPI<{ sites?: Site[] }>('/searchSites?type=LOCAL', {
+        // const sitesResponse = await fetchAPI<{ sites?: Site[] }>('/searchSites?type=LOCAL', {
+        //   method: 'GET',
+        // })
+
+        console.log('searchSites')
+        const sitesResponse = await fetchAPI<any>('/searchSites?type=LOCAL', {
           method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-          cache: 'no-cache',
         })
+
+        console.log(sitesResponse)
         const { data } = sitesResponse
 
         /* Captar exceções */
