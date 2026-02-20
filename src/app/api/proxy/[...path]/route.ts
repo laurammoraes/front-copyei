@@ -3,20 +3,13 @@ import { cookies } from 'next/headers'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? process.env.API_BASE_URL
 
-/** Origem pública do app (em produção atrás de proxy, request.url pode ser localhost) */
+/** Origem pública do app (em produção atrás de proxy, request.url pode ser localhost). Em prod força HTTPS. */
 function getPublicOrigin(request: NextRequest): string {
   const proto = request.headers.get('x-forwarded-proto') ?? request.headers.get('x-forwarded-protocol')
   const host = request.headers.get('x-forwarded-host') ?? request.headers.get('host')
   if (host) {
     const isLocalhost = /^localhost(:\d+)?$/i.test(host) || /^127\.0\.0\.1(:\d+)?$/.test(host)
-    let scheme: string
-    if (proto === 'https' || proto === 'http') {
-      scheme = proto
-    } else if (!isLocalhost) {
-      scheme = 'https'
-    } else {
-      scheme = 'http'
-    }
+    const scheme = isLocalhost ? (proto === 'https' ? 'https' : 'http') : 'https'
     return `${scheme}://${host}`
   }
   try {
