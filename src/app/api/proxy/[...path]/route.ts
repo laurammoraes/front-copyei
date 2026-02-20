@@ -61,7 +61,14 @@ async function proxyRequest(request: NextRequest, pathSegments: string[]) {
     let nextUrl: string | null = response.headers.get('location')
     const baseUrl = API_BASE_URL.replace(/\/$/, '')
     while (nextUrl) {
-      const resolved = nextUrl.startsWith('http') ? nextUrl : `${baseUrl}${nextUrl.startsWith('/') ? '' : '/'}${nextUrl}`
+      let resolved: string
+      if (nextUrl.startsWith('http')) {
+        resolved = nextUrl
+      } else {
+        let path = nextUrl.startsWith('/') ? nextUrl : `/${nextUrl}`
+        if (baseUrl.endsWith('/api') && path.startsWith('/api/')) path = path.slice(4)
+        resolved = `${baseUrl}${path.startsWith('/') ? '' : '/'}${path}`
+      }
       response = await fetch(resolved, { method: 'GET', headers, redirect: 'manual' })
       nextUrl = response.status >= 300 && response.status < 400 ? response.headers.get('location') : null
     }
