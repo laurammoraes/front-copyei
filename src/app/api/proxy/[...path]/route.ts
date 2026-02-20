@@ -46,6 +46,7 @@ async function proxyRequest(request: NextRequest, pathSegments: string[]) {
 
   let response = await fetch(url, init)
 
+<<<<<<< HEAD
   /* Para o path editor: seguir redirects no servidor (evita 401 no browser ao redirecionar para a API) */
   if (pathSegments[0] === 'editor' && response.status >= 300 && response.status < 400) {
     let nextUrl: string | null = response.headers.get('location')
@@ -55,10 +56,21 @@ async function proxyRequest(request: NextRequest, pathSegments: string[]) {
       response = await fetch(resolvedUrl, followInit)
       nextUrl =
         response.status >= 300 && response.status < 400 ? response.headers.get('location') : null
+=======
+  /* Para site/*: seguir redirects no servidor (backend renderiza o site e pode redirecionar com URL relativa) */
+  if (pathSegments[0] === 'site' && response.status >= 300 && response.status < 400) {
+    let nextUrl: string | null = response.headers.get('location')
+    const baseUrl = API_BASE_URL.replace(/\/$/, '')
+    while (nextUrl) {
+      const resolved = nextUrl.startsWith('http') ? nextUrl : `${baseUrl}${nextUrl.startsWith('/') ? '' : '/'}${nextUrl}`
+      response = await fetch(resolved, { method: 'GET', headers, redirect: 'manual' })
+      nextUrl = response.status >= 300 && response.status < 400 ? response.headers.get('location') : null
+>>>>>>> 1942e35 (ajuste e ocultação do drive)
     }
   } else if (response.status >= 300 && response.status < 400) {
     const location = response.headers.get('location')
     if (location) {
+<<<<<<< HEAD
       try {
         const apiBase = API_BASE_URL.replace(/\/$/, '')
         let path = location.startsWith('/') ? location : `/${location}`
@@ -71,6 +83,10 @@ async function proxyRequest(request: NextRequest, pathSegments: string[]) {
       } catch {
         /* URL inválida; não redireciona para evitar TypeError: Invalid URL */
       }
+=======
+      const absolute = location.startsWith('http') ? location : new URL(location, request.url).toString()
+      return NextResponse.redirect(absolute)
+>>>>>>> 1942e35 (ajuste e ocultação do drive)
     }
   }
 
