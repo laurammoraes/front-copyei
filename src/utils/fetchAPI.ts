@@ -45,11 +45,6 @@ export async function fetchAPI<T = unknown>(url: RequestInfo | URL, init?: Reque
     const token = getAuthToken()
     if (token) headers.set('X-Auth-Token', token)
 
-<<<<<<< HEAD
-    const contentType = response.headers.get('content-type') ?? ''
-    const isJson = contentType.includes('application/json')
-    const text = await response.text()
-=======
     let { response, text } = await fetchOnce(path, init ?? {}, headers)
     console.log(`[DEBUG] Path: ${path} | Status: ${response.status} | Body Length: ${text.length}`)
 
@@ -63,23 +58,12 @@ export async function fetchAPI<T = unknown>(url: RequestInfo | URL, init?: Reque
         text = next.text
       }
     }
->>>>>>> d9d0d2f (requisição funcionando)
 
     if (!text.trim()) {
       return {
         data: null as T,
         status: response.status,
         ok: response.ok,
-        headers: response.headers,
-      }
-    }
-
-    if (!isJson) {
-      console.warn('[fetchAPI] Resposta não é JSON', { path, contentType, status: response.status })
-      return {
-        data: null as T,
-        status: response.status,
-        ok: false,
         headers: response.headers,
       }
     }
