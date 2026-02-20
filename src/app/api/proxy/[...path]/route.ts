@@ -8,7 +8,15 @@ function getPublicOrigin(request: NextRequest): string {
   const proto = request.headers.get('x-forwarded-proto') ?? request.headers.get('x-forwarded-protocol')
   const host = request.headers.get('x-forwarded-host') ?? request.headers.get('host')
   if (host) {
-    const scheme = proto === 'https' || proto === 'http' ? proto : 'https'
+    const isLocalhost = /^localhost(:\d+)?$/i.test(host) || /^127\.0\.0\.1(:\d+)?$/.test(host)
+    let scheme: string
+    if (proto === 'https' || proto === 'http') {
+      scheme = proto
+    } else if (!isLocalhost) {
+      scheme = 'https'
+    } else {
+      scheme = 'http'
+    }
     return `${scheme}://${host}`
   }
   try {
@@ -185,6 +193,11 @@ async function proxyRequest(request: NextRequest, pathSegments: string[]) {
       if (origin) {
         text = text.replaceAll('http://localhost:3000/api/proxy', proxyBase)
         text = text.replaceAll('http://127.0.0.1:3000/api/proxy', proxyBase)
+        /* Garante HTTPS: evita mixed content se o proxy não enviar x-forwarded-proto */
+        if (origin.startsWith('https://')) {
+          const httpOrigin = 'http://' + origin.slice(8)
+          text = text.replaceAll(httpOrigin, origin)
+        }
       }
     }
     return new NextResponse(text, { status, headers: resHeaders })
