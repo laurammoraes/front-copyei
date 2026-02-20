@@ -177,6 +177,9 @@ async function proxyRequest(request: NextRequest, pathSegments: string[]) {
   }
   if (contentType.includes('application/') || contentType.includes('text/')) {
     let text = await response.text()
+    const origin = getPublicOrigin(request)
+    const proxyBase = origin ? `${origin}/api/proxy` : '/api/proxy'
+
     /* Reescreve URLs absolutas da API no HTML do editor para passarem pelo proxy (evita 401 em scripts/assets) */
     const isEditorPage =
       segments[0] === 'editor' &&
@@ -186,20 +189,20 @@ async function proxyRequest(request: NextRequest, pathSegments: string[]) {
       !looksLikeEditorAsset(segments[1])
     if (isEditorPage && contentType.includes('text/html')) {
       const apiBase = API_BASE_URL.replace(/\/$/, '')
-      const origin = getPublicOrigin(request)
-      const proxyBase = origin ? `${origin}/api/proxy` : '/api/proxy'
       text = text.replaceAll(apiBase, proxyBase)
-      /* Em produção atrás de proxy, backend pode injetar localhost; reescrever para o proxy público */
       if (origin) {
         text = text.replaceAll('http://localhost:3000/api/proxy', proxyBase)
         text = text.replaceAll('http://127.0.0.1:3000/api/proxy', proxyBase)
-        /* Garante HTTPS: evita mixed content se o proxy não enviar x-forwarded-proto */
-        if (origin.startsWith('https://')) {
-          const httpOrigin = 'http://' + origin.slice(8)
-          text = text.replaceAll(httpOrigin, origin)
-        }
       }
     }
+
+    /* Para qualquer resposta de texto do editor (HTML, JS, CSS): forçar HTTPS na origem do app (evita mixed content em prod) */
+    const isEditorResponse = segments[0] === 'editor'
+    if (isEditorResponse && origin && origin.startsWith('https://')) {
+      const httpOrigin = 'http://' + origin.slice(8)
+      text = text.replaceAll(httpOrigin, origin)
+    }
+
     return new NextResponse(text, { status, headers: resHeaders })
   }
   const blob = await response.blob()
