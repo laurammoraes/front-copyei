@@ -58,7 +58,7 @@ export default function AdminView() {
       /* Inicia estado de carregamento */
       setIsLoading(true)
 
-      /* Fazer requisição ao backend (backend encontra o site pelo title) */
+      /* Verifica se o site está disponível (via proxy) */
       const siteUrl = title
       const response = await fetch(`/api/proxy/site/${siteUrl}`, {
         credentials: 'include',
@@ -71,7 +71,10 @@ export default function AdminView() {
         return
       }
 
-      window.open(`/api/proxy/site/${siteUrl}`, '_blank')
+      /* Abre a página clonada diretamente na URL da API (ex.: https://api.copyei.online/api/site/testelaura3/) */
+      const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? ''
+      const directUrl = `${baseUrl.replace(/\/$/, '')}/site/${siteUrl}/`
+      window.open(directUrl, '_blank')
     } catch (error) {
       console.error(error)
       toast.error('Erro ao visualizar a página')
